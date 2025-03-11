@@ -14,7 +14,7 @@ const categoryRoutes = async (fastify, options) => {
     reply.status(200).send(results);
   });
 
-  fastify.get("/categories/:id", async (req, reply) => {
+  fastify.get("/api/categories/:id", async (req, reply) => {
     try {
       reply.status(200).send(await service.getById(req.params.id));
     } catch (error) {
@@ -23,7 +23,7 @@ const categoryRoutes = async (fastify, options) => {
   });
 
   fastify.post(
-    "/categories",
+    "/api/categories",
     { schema: categorySchema },
     async (req, reply) => {
       try {
@@ -36,7 +36,7 @@ const categoryRoutes = async (fastify, options) => {
   );
 
   fastify.put(
-    "/categories/:id",
+    "/api/categories/:id",
     { schema: categorySchema },
     async (req, reply) => {
       try {

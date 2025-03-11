@@ -4,7 +4,7 @@
  * @param {Object} options plugin options
  */
 const dashboardRoutes = async (fastify, options) => {
-  fastify.get("/dashboard", async (req, reply) => {
+  fastify.get("/api/dashboard", async (req, reply) => {
     return {
       hello: "dashboard"
     };

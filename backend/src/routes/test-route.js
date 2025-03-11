@@ -8,13 +8,13 @@ import { getUploadedFile, uploadPath } from "../utils/pathConfig.js";
  * @param {Object} options plugin options
  */
 const testRoutes = async (fastify, option) => {
-  fastify.get("/tests", async (req, reply) => {
+  fastify.get("/api/tests", async (req, reply) => {
     reply.send({
       hello: await uploadPath("products", "fileImg.jpg")
     });
   });
 
-  fastify.get("/tests/upload/:folder/:filename", async (req, reply) => {
+  fastify.get("/api/tests/upload/:folder/:filename", async (req, reply) => {
     const { folder, filename } = req.params;
     try {
       const { contentType, file } = await getUploadedFile(
@@ -29,7 +29,7 @@ const testRoutes = async (fastify, option) => {
     }
   });
 
-  fastify.post("/tests/upload/file", async (req, reply) => {
+  fastify.post("/api/tests/upload/file", async (req, reply) => {
     const { file, filename } = await req.file();
     if (file) {
       const { path } = await uploadPath("products", filename);

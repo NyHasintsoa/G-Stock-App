@@ -43,7 +43,7 @@ function TemplateDropdown() {
             aria-orientation="vertical"
             aria-labelledby="hs-dropdown-preview-sidebar"
             style={{
-              transform: "translate3d(144px, 58px, 0px);"
+              transform: "translate3d(144px, 58px, 0px)"
             }}
             data-placement="bottom-start"
           >
