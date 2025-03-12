@@ -2,23 +2,25 @@ import Logo from "../Logo/Logo.jsx";
 import { Link, NavLink } from "react-router";
 import TemplateDropdown from "./TemplateDropdown.jsx";
 
-function Sidebar() {
+// eslint-disable-next-line react/prop-types
+function Sidebar({ isOpen }) {
   return (
     <>
       <div
-        id="hs-application-sidebar"
-        className="hs-overlay  [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform w-65 h-full hidden fixed inset-y-0 start-0 z-60 bg-white border-e border-gray-200 lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 dark:bg-neutral-800 dark:border-neutral-700"
+        className={
+          "hs-overlay [--auto-close:lg] " +
+          (isOpen ? "translate-x-0" : "-translate-x-full hidden") +
+          " transition-all duration-300 transform w-65 h-full fixed inset-y-0 start-0 z-60 bg-white border-e border-gray-200 lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 dark:bg-neutral-800 dark:border-neutral-700"
+        }
       >
         <div className="relative flex flex-col h-full max-h-full">
           <div className="px-6 pt-4 flex items-center">
             <Link
               className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-hidden focus:opacity-80"
-              href="#"
-              aria-label="Preline"
+              to={"/"}
             >
               <Logo />
             </Link>
-
             <TemplateDropdown />
           </div>
 

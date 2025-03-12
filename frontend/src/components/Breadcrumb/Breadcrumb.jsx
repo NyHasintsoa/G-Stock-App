@@ -1,4 +1,13 @@
-function Breadcrumb() {
+// eslint-disable-next-line react/prop-types
+function Breadcrumb({ setIsOpen }) {
+  const toggleSidebar = () => {
+    const bodyHtml = document.querySelector("body");
+    bodyHtml.classList.toggle("overflow-hidden");
+    setIsOpen((isOpen) => {
+      return !isOpen;
+    });
+  };
+
   return (
     <>
       <div className="sticky top-0 inset-x-0 z-20 bg-white border-y border-gray-200 px-4 sm:px-6 lg:px-8 lg:hidden dark:bg-neutral-800 dark:border-neutral-700">
@@ -6,11 +15,7 @@ function Breadcrumb() {
           <button
             type="button"
             className="size-8 flex justify-center items-center gap-x-2 border border-gray-200 text-gray-800 hover:text-gray-500 rounded-lg focus:outline-hidden focus:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-            aria-haspopup="dialog"
-            aria-expanded="true"
-            aria-controls="hs-application-sidebar"
-            aria-label="Toggle navigation"
-            data-hs-overlay="#hs-application-sidebar"
+            onClick={toggleSidebar}
           >
             <span className="sr-only">Toggle Navigation</span>
             <svg
