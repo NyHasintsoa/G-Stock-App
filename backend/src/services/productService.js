@@ -60,6 +60,19 @@ class ProductService {
   }
 
   /**
+   * Update Product By Id
+   * @param {Object} req Request body
+   * @param {string} productId Product Id
+   */
+  async updateProduct(req, productId) {
+    await this.#connection.execute(
+      "UPDATE `product` SET `designation`=?,`price`=?,`category_id`=?,`unite_id`=? " +
+        "WHERE `product`.`id`=?",
+      [req.designation, req.price, req.category_id, req.unite_id, productId]
+    );
+  }
+
+  /**
    * Upload Product Image To the disk
    * @param {import("fastify").FastifyRequest} req Request from client
    * @param {string} productId Product Id
