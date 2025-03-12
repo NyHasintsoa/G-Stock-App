@@ -16,9 +16,10 @@ class ProductService {
   #selectQuery() {
     return (
       "SELECT `product`.`id` AS id,`product`.`designation` AS designation," +
-      "`product`.`price` AS price, `product`.`path_img` AS path_img," +
-      "`category`.`name` AS category FROM `product` LEFT JOIN `category`" +
-      "ON `product`.`category_id` = `category`.`id`"
+      "`product`.`price` AS price,`product`.`path_img` AS path_img," +
+      "`category`.`name` AS category,`unite`.`name` AS unite FROM `product` " +
+      "LEFT JOIN `category` ON `product`.`category_id` = `category`.`id` " +
+      "LEFT JOIN `unite` ON `product`.`unite_id` = `unite`.`id`"
     );
   }
 
@@ -46,9 +47,15 @@ class ProductService {
   async addProduct(req) {
     await this.#connection.execute(
       "INSERT INTO `product` " +
-        "(`id`, `designation`, `price`, `category_id`) " +
-        "VALUES (?,?,?,?)",
-      [generateId(req.designation), req.designation, req.price, req.category_id]
+        "(`id`, `designation`, `price`, `category_id`, `unite_id`) " +
+        "VALUES (?,?,?,?,?)",
+      [
+        generateId(req.designation),
+        req.designation,
+        req.price,
+        req.category_id,
+        req.unite_id
+      ]
     );
   }
 

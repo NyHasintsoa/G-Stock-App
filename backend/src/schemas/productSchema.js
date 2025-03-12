@@ -1,6 +1,6 @@
 const productBodyJsonSchema = {
   type: "object",
-  required: ["designation", "price", "category_id"],
+  required: ["designation", "price", "category_id", "unite_id"],
   properties: {
     designation: {
       type: "string"
@@ -9,6 +9,9 @@ const productBodyJsonSchema = {
       type: "number"
     },
     category_id: {
+      type: "string"
+    },
+    unite_id: {
       type: "string"
     },
     path_img: {

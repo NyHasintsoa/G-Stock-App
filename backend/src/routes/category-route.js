@@ -9,7 +9,7 @@ import CategoryService from "../services/categoryService.js";
 const categoryRoutes = async (fastify, options) => {
   const service = new CategoryService(await fastify.mysql.getConnection());
 
-  fastify.get("/categories", async (req, reply) => {
+  fastify.get("/api/categories", async (req, reply) => {
     const [results] = await service.getAll();
     reply.status(200).send(results);
   });

@@ -6,6 +6,7 @@ import dashboardRoutes from "./src/routes/dashboard-route.js";
 import categoryRoutes from "./src/routes/category-route.js";
 import testRoutes from "./src/routes/test-route.js";
 import dotenv from "dotenv";
+import uniteRoutes from "./src/routes/unite-route.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ fastify.register(fastifyMultipart, {
  */
 fastify.register(productRoutes);
 fastify.register(categoryRoutes);
+fastify.register(uniteRoutes);
 fastify.register(dashboardRoutes);
 fastify.register(testRoutes);
 
