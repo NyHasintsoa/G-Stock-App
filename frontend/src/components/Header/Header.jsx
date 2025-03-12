@@ -1,3 +1,4 @@
+import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher.jsx";
 import HeadDropdown from "./HeadDropdown.jsx";
 import UserDropdown from "./UserDropdown.jsx";
 
@@ -53,28 +54,7 @@ function Header() {
           <div className="w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3">
             <div></div>
             <div className="flex flex-row items-center justify-end gap-1">
-              <button
-                type="button"
-                className="md:hidden size-9.5 relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-              >
-                <svg
-                  className="shrink-0 size-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.3-4.3" />
-                </svg>
-                <span className="sr-only">Search</span>
-              </button>
-
+              <ThemeSwitcher />
               <button
                 type="button"
                 className="size-9.5 relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"

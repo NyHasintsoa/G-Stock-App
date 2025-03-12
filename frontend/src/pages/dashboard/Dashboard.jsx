@@ -2,7 +2,7 @@ import AdminUsers from "./AdminUsers.jsx";
 
 function Dashboard() {
   return (
-    <div className="w-full lg:ps-64">
+    <div className="w-full">
       <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <div className="flex flex-col bg-white border border-gray-200 shadow-2xs rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
