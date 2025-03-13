@@ -3,6 +3,7 @@ import fastifyMysql from "@fastify/mysql";
 import fastifyMultipart from "@fastify/multipart";
 import cors from "@fastify/cors";
 import dotenv from "dotenv";
+import swaggerDocs from "./src/docs/swaggerDocs.js";
 import productRoutes from "./src/routes/product-route.js";
 import dashboardRoutes from "./src/routes/dashboard-route.js";
 import categoryRoutes from "./src/routes/category-route.js";
@@ -22,6 +23,8 @@ fastify.register(fastifyMysql, {
   promise: true,
   connectionString: process.env.DATABASE_URL
 });
+
+fastify.register(swaggerDocs);
 
 fastify.register(cors, {
   origin: process.env.FRONTEND_URL
