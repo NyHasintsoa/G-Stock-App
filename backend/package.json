@@ -12,10 +12,11 @@
     "generate:id": "node ./src/utils/generateId.js"
   },
   "dependencies": {
+    "@fastify/cors": "^11.0.0",
     "@fastify/multipart": "^9.0.3",
     "@fastify/mysql": "^5.0.2",
+    "@fastify/swagger-ui": "^5.2.2",
     "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",

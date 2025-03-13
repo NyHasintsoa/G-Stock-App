@@ -1,11 +1,12 @@
 import Fastify from "fastify";
-import productRoutes from "./src/routes/product-route.js";
 import fastifyMysql from "@fastify/mysql";
 import fastifyMultipart from "@fastify/multipart";
+import cors from "@fastify/cors";
+import dotenv from "dotenv";
+import productRoutes from "./src/routes/product-route.js";
 import dashboardRoutes from "./src/routes/dashboard-route.js";
 import categoryRoutes from "./src/routes/category-route.js";
 import testRoutes from "./src/routes/test-route.js";
-import dotenv from "dotenv";
 import uniteRoutes from "./src/routes/unite-route.js";
 
 dotenv.config();
@@ -20,6 +21,10 @@ const fastify = Fastify({
 fastify.register(fastifyMysql, {
   promise: true,
   connectionString: process.env.DATABASE_URL
+});
+
+fastify.register(cors, {
+  origin: process.env.FRONTEND_URL
 });
 
 fastify.register(fastifyMultipart, {

@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import AdminLayout from "./AdminLayout.jsx";
 import ListProduct from "../pages/product/ListProduct/ListProduct.jsx";
-import AddProduct from "../pages/product/AddProduct.jsx";
 import UpdateProduct from "../pages/product/UpdateProduct.jsx";
 import Home from "../pages/home/Home.jsx";
 import BaseLayout from "./BaseLayout.jsx";
@@ -12,6 +11,7 @@ import SignIn from "../pages/auth/signin.jsx";
 import SignUp from "../pages/auth/SignUp.jsx";
 import ForgotPassword from "../pages/auth/ForgotPassword.jsx";
 import About from "../pages/about/About.jsx";
+import AddProduct from "../pages/product/AddProduct/AddProduct.jsx";
 
 const router = createBrowserRouter([
   {

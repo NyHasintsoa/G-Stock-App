@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import { Toaster } from "react-hot-toast";
 import Header from "../components/Header/Header.jsx";
 import Breadcrumb from "../components/Breadcrumb/Breadcrumb.jsx";
 import Sidebar from "../components/Sidebar/Sidebar.jsx";
@@ -8,6 +9,7 @@ function AdminLayout() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
+      <Toaster position={"top-right"} reverseOrder={false} gutter={10} />
       <div className="bg-gray-50 dark:bg-neutral-900">
         <Header />
         <Breadcrumb setIsOpen={setIsOpen} />
@@ -23,6 +25,7 @@ function AdminLayout() {
           style={{ zIndex: 59 }}
           className="hs-overlay-backdrop transition duration fixed inset-0 bg-gray-900/50 dark:bg-neutral-900/80"
           onClick={() => {
+            document.querySelector("body").classList.remove("overflow-hidden");
             setIsOpen(false);
           }}
         />
