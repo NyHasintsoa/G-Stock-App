@@ -44,7 +44,9 @@ const categoryRoutes = async (fastify, options) => {
         reply.status(200).send({
           message: "Category updated successfully"
         });
-      } catch (error) {}
+      } catch (error) {
+        reply.status(500).send(error);
+      }
     }
   );
 };

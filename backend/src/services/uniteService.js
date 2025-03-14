@@ -11,12 +11,12 @@ class UniteService {
   }
 
   async getAll() {
-    return await this.#connection.query("SELECT * FROM unite");
+    return await this.#connection.query("SELECT * FROM `unite`");
   }
 
   async getById(uniteId) {
     const [result] = await this.#connection.query(
-      "SELECT * FROM unite WHERE id = ?",
+      "SELECT * FROM `unite` WHERE id = ?",
       [uniteId]
     );
     if (result.length == 0) throw new Error("Unite not found");

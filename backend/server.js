@@ -9,6 +9,11 @@ import dashboardRoutes from "./src/routes/dashboard-route.js";
 import categoryRoutes from "./src/routes/category-route.js";
 import testRoutes from "./src/routes/test-route.js";
 import uniteRoutes from "./src/routes/unite-route.js";
+import mailer from "./src/config/mailer.js";
+import authRoutes from "./src/routes/auth-route.js";
+import googleOAauth from "./src/config/googleOAauth.js";
+import userRoutes from "./src/routes/user-route.js";
+import jwtAuthToken from "./src/config/jwtAuthToken.js";
 
 dotenv.config();
 
@@ -24,19 +29,22 @@ fastify.register(fastifyMysql, {
   connectionString: process.env.DATABASE_URL
 });
 
+fastify.register(mailer);
+fastify.register(googleOAauth);
 fastify.register(swaggerDocs);
-
 fastify.register(cors, {
-  origin: process.env.FRONTEND_URL
+  origin: [process.env.FRONTEND_URL]
 });
-
 fastify.register(fastifyMultipart, {
   limits: 1048576
 });
+fastify.register(jwtAuthToken);
 
 /**
  * Fastify Router
  */
+fastify.register(authRoutes);
+fastify.register(userRoutes);
 fastify.register(productRoutes);
 fastify.register(categoryRoutes);
 fastify.register(uniteRoutes);

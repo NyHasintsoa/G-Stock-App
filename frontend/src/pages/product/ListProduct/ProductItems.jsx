@@ -13,7 +13,7 @@ function ProductItems({ products }) {
                   className="inline-block size-11 rounded-lg"
                   src={
                     product.path_img !== null
-                      ? "/api/products/images/" + product.path_img
+                      ? "/api/upload/products/images/" + product.path_img
                       : productPlaceholder
                   }
                   alt="Product Image"

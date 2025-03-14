@@ -23,20 +23,23 @@ const productRoutes = async (fastify, options) => {
     }
   });
 
-  fastify.get("/api/products/images/:folder/:filename", async (req, reply) => {
-    const { folder, filename } = req.params;
-    try {
-      const { contentType, file } = await getUploadedFile(
-        "products",
-        folder,
-        filename
-      );
-      if (contentType) reply.type(contentType).send(file);
-      else reply.send(file);
-    } catch (error) {
-      reply.status(404).send(error);
+  fastify.get(
+    "/api/upload/products/images/:folder/:filename",
+    async (req, reply) => {
+      const { folder, filename } = req.params;
+      try {
+        const { contentType, file } = await getUploadedFile(
+          "products",
+          folder,
+          filename
+        );
+        if (contentType) reply.type(contentType).send(file);
+        else reply.send(file);
+      } catch (error) {
+        reply.status(404).send(error);
+      }
     }
-  });
+  );
 
   fastify.post(
     "/api/products",

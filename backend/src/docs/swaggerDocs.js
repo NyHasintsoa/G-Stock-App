@@ -10,7 +10,7 @@ import swaggerUi from "@fastify/swagger-ui";
 const swaggerDocs = async (fastify, options) => {
   await fastify.register(swagger);
   await fastify.register(swaggerUi, {
-    routePrefix: process.env.SWAGGER_URL,
+    routePrefix: process.env.SWAGGER_URL || "/documentation",
     uiConfig: {
       docExpansion: "list",
       deepLinking: false
