@@ -8,7 +8,7 @@ import fastifyPlugin from "fastify-plugin";
  */
 const googleOAauth = (fastify, options) => {
   fastify.register(fastifyOAuth, {
-    name: "Google OAuth2 G Stock App",
+    name: "googleOAuth2",
     credentials: {
       auth: fastifyOAuth.GOOGLE_CONFIGURATION,
       client: {
@@ -16,8 +16,11 @@ const googleOAauth = (fastify, options) => {
         secret: process.env.GOOGLE_SECRET
       }
     },
-    scope: ["profile", "email"],
-    callbackUri: process.env.GOOGLE_CALLBACK_URI
+    scope: ["profil", "email"],
+    callbackUri: process.env.GOOGLE_CALLBACK_URI,
+    callbackUriParams: {
+      access_type: "online"
+    }
   });
 };
 

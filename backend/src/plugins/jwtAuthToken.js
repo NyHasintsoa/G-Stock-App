@@ -1,6 +1,6 @@
 import fastifyJwt from "@fastify/jwt";
 import fastifyPlugin from "fastify-plugin";
-import { matchSecuredUrl } from "../utils/matchUrl.js";
+import { matchSecuredUrl, transformToRegex } from "../utils/matchUrl.js";
 
 /**
  * Encapsulates the routes
@@ -8,14 +8,19 @@ import { matchSecuredUrl } from "../utils/matchUrl.js";
  * @param {Object} options plugin options
  */
 const jwtAuthToken = (fastify, options) => {
-  const SECURED_URLS = ["/api/users", "/api/users/**", "/api/products/**"];
+  const SECURED_URLS = [
+    "/api/users",
+    "/api/users/",
+    "/api/products",
+    "/api/products/"
+  ];
 
   fastify.register(fastifyJwt, {
     secret: process.env.JWT_SECRET
   });
 
   fastify.addHook("preHandler", async (request, reply) => {
-    if (matchSecuredUrl(request.url, SECURED_URLS)) {
+    if (SECURED_URLS.some((url) => transformToRegex(url).test(request.url))) {
       try {
         await request.jwtVerify();
       } catch (err) {

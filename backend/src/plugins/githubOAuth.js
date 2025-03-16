@@ -16,7 +16,7 @@ const githubOAauth = (fastify, options) => {
         secret: process.env.GITHUB_SECRET
       }
     },
-    scope: ["profile", "email"],
+    scope: ["user:email"],
     callbackUri: process.env.GITHUB_CALLBACK_URI
   });
 };

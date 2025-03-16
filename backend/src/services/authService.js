@@ -40,14 +40,19 @@ class AuthService {
       if (!(await this.#verifyPassword(password, user.password))) {
         throw new Error("Please check your email or password");
       }
-      return this.#fastify.jwt.sign({
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        profile_image: user.profile_image,
-        created_at: user.created_at,
-        updated_at: user.updated_at
-      });
+      return this.#fastify.jwt.sign(
+        {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          profile_image: user.profile_image,
+          created_at: user.created_at,
+          updated_at: user.updated_at
+        },
+        {
+          expiresIn: process.env.JWT_EXPIRATION || "1d"
+        }
+      );
     } catch (error) {
       throw new Error("Please check your email or password");
     }

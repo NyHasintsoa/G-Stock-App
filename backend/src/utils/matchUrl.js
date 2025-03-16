@@ -10,4 +10,8 @@ function matchSecuredUrl(url, securedRequests) {
   return false;
 }
 
-export { matchSecuredUrl };
+function transformToRegex(url) {
+  return new RegExp(url.replace(/\//g, "\\/") + ".*");
+}
+
+export { matchSecuredUrl, transformToRegex };

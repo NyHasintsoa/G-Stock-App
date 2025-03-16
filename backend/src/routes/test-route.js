@@ -10,7 +10,7 @@ import { getUploadedFile, uploadPath } from "../utils/pathConfig.js";
 const testRoutes = async (fastify, option) => {
   fastify.get("/api/tests", async (req, reply) => {
     reply.send({
-      hello: await uploadPath("products", "fileImg.jpg")
+      hello: req.url
     });
   });
 
