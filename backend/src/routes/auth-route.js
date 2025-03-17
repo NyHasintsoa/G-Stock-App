@@ -67,8 +67,9 @@ const authRoutes = async (fastify, options) => {
 
   fastify.get("/auth/google/callback", async (request, reply) => {
     try {
-      const r = await googleOAuthService.setCredentialsFromCode(request);
-      reply.status(200).send(r);
+      const userInfo = await googleOAuthService.getUserInfo(request);
+      const token = await service.authGoogleUser(userInfo);
+      reply.status(200).send({ token });
     } catch (error) {
       reply.status(500).send(error);
     }
@@ -85,7 +86,7 @@ const authRoutes = async (fastify, options) => {
   fastify.get("/auth/github/callback", async (request, reply) => {
     try {
       const { access_token } = await githubOAuthService.getAccessToken(request);
-      const response = await githubOAuthService.getApi(access_token);
+      const response = await githubOAuthService.getUserApi(access_token);
       reply.status(200).send(response);
     } catch (error) {
       reply.status(500).send(error);

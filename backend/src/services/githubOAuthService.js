@@ -6,6 +6,7 @@ class GithubOAuthService {
   generateUrl() {
     const url = new URL("https://github.com/login/oauth/authorize");
     url.searchParams.set("client_id", process.env.GITHUB_CLIENT_ID);
+    url.searchParams.set("scope", "user,user:email");
     url.searchParams.set("redirect_uri", process.env.GITHUB_CALLBACK_URI);
     return url.toString();
   }
@@ -38,7 +39,7 @@ class GithubOAuthService {
    * @param {string} token
    * @return {Promise}
    */
-  async getApi(token) {
+  async getUserApi(token) {
     const r = await fetch(`https://api.github.com/user`, {
       method: "GET",
       headers: {

@@ -14,6 +14,7 @@
   "dependencies": {
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^11.0.0",
+    "@fastify/elasticsearch": "^4.0.2",
     "@fastify/env": "^5.0.2",
     "@fastify/jwt": "^9.0.4",
     "@fastify/multipart": "^9.0.3",
@@ -28,6 +29,7 @@
     "fastify-mailer": "^2.3.1",
     "fastify-plugin": "^5.0.1",
     "googleapis": "^146.0.0",
+    "meilisearch": "^0.49.0",
     "mime-types": "^2.1.35",
     "nodemailer": "^6.10.0"
   },

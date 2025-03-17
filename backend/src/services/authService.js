@@ -40,22 +40,30 @@ class AuthService {
       if (!(await this.#verifyPassword(password, user.password))) {
         throw new Error("Please check your email or password");
       }
-      return this.#fastify.jwt.sign(
-        {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          profile_image: user.profile_image,
-          created_at: user.created_at,
-          updated_at: user.updated_at
-        },
-        {
-          expiresIn: process.env.JWT_EXPIRATION || "1d"
-        }
-      );
+      return this.#generateToken(user.email, user.username, user.profile_image);
     } catch (error) {
       throw new Error("Please check your email or password");
     }
+  }
+
+  /**
+   * Generate Token By Params
+   * @param {string} email User email
+   * @param {string} username User username
+   * @param {string} profile_image url user's picture
+   * @return {Object}
+   */
+  #generateToken(email, username, profile_image) {
+    return this.#fastify.jwt.sign(
+      {
+        email: email,
+        username: username,
+        profile_image: profile_image
+      },
+      {
+        expiresIn: process.env.JWT_EXPIRATION || "1d"
+      }
+    );
   }
 
   /**
@@ -75,6 +83,12 @@ class AuthService {
    */
   async #verifyPassword(password, hashPassword) {
     return await bcrypt.compare(password, hashPassword);
+  }
+
+  async authGoogleUser(user) {
+    const { email, username, profile_image } =
+      await this.#userService.checkUserFromGoogle(user);
+    return this.#generateToken(email, username, profile_image);
   }
 }
 

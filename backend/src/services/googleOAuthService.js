@@ -1,5 +1,4 @@
 import { google } from "googleapis";
-import { URL } from "node:url";
 
 class GoogleOAuthService {
   #oauth2Client;
@@ -26,7 +25,7 @@ class GoogleOAuthService {
    * @param {import("fastify").FastifyRequest} request
    * @return {Promise}
    */
-  async setCredentialsFromCode(request) {
+  async getUserInfo(request) {
     const { code } = request.query;
     let { tokens } = await this.#oauth2Client.getToken(code);
     this.#oauth2Client.setCredentials(tokens);
