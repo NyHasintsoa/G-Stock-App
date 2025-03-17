@@ -7,11 +7,11 @@ import BaseLayout from "./BaseLayout.jsx";
 import Dashboard from "../pages/dashboard/Dashboard.jsx";
 import RouteError from "../pages/route-error/RouteError.jsx";
 import Layout from "./Layout.jsx";
-import SignIn from "../pages/auth/signin.jsx";
 import SignUp from "../pages/auth/SignUp.jsx";
 import ForgotPassword from "../pages/auth/ForgotPassword.jsx";
 import About from "../pages/about/About.jsx";
 import AddProduct from "../pages/product/AddProduct/AddProduct.jsx";
+import SignIn from "../pages/auth/SignIn.jsx";
 
 const router = createBrowserRouter([
   {

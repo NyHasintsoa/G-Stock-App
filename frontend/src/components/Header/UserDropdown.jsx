@@ -1,5 +1,5 @@
 import avatarImg from "../../assets/avatar.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,15 +8,10 @@ function UserDropdown() {
     setIsOpen((isOpen) => !isOpen);
   };
 
-  const dropdownStyle = {
-    transform: "translate3d(0px, 56px, 0px)"
-  };
-
-  const expandedStyle = {
-    transform: "translate3d(0px, 56px, 0px)",
+  const dropStyle = {
     position: "fixed",
-    inset: "0px auto auto 0px",
-    margin: "0px"
+    right: 0,
+    top: "40px"
   };
 
   return (
@@ -44,13 +39,10 @@ function UserDropdown() {
 
       <div
         className={
-          "hs-dropdown-menu transition-[opacity,margin] duration min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" +
+          "hs-dropdown-menu min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" +
           (isOpen ? " block opacity-100" : " hidden opacity-0")
         }
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="hs-dropdown-account"
-        style={isOpen ? expandedStyle : dropdownStyle}
+        style={isOpen ? dropStyle : null}
       >
         <div className="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-700">
           <p className="text-sm text-gray-500 dark:text-neutral-500">

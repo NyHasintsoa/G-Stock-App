@@ -1,6 +1,51 @@
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import { handleGoogleOAuth } from "../../services/authService.js";
+import InputForm from "../../components/Inputs/InputForm.jsx";
+import { wait } from "../../utils/api.js";
+import useAuth from "../../hooks/useAuth.js";
+
+const SignInInputOptions = {
+  email: {
+    name: "email",
+    type: "email",
+    label: "Email",
+    rules: {
+      required: "Veuillez entrer votre adresse mail",
+      pattern: {
+        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        message: "Adresse e-mail invalide"
+      },
+      minLength: {
+        value: 3,
+        message: "Ce champ doit comporter au moins 3 caractères"
+      }
+    }
+  },
+  password: {
+    name: "password",
+    type: "password",
+    label: "Mot de passe",
+    rules: {
+      required: "Veuillez entrer votre mot de passe",
+      minLength: {
+        value: 3,
+        message: "Ce champ doit comporter au moins 3 caractères"
+      }
+    }
+  }
+};
 
 function SignIn() {
+  const { register, handleSubmit, formState } = useForm();
+  const { loginUser } = useAuth();
+
+  const onSubmit = async (data) => {
+    await wait(3000);
+    await loginUser(data);
+  };
+
+  const { errors, isSubmitting } = formState;
   return (
     <>
       <div className="bg-gray-100 h-screen flex items-center py-16 dark:bg-neutral-800">
@@ -25,7 +70,8 @@ function SignIn() {
               <div className="mt-5">
                 <button
                   type="button"
-                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                  onClick={handleGoogleOAuth}
+                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 cursor-pointer"
                 >
                   <svg
                     className="w-4 h-auto"
@@ -59,115 +105,57 @@ function SignIn() {
                 </div>
 
                 {/* Form */}
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="grid gap-y-4">
-                    {/* Form Group */}
                     <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm mb-2 dark:text-white"
-                      >
-                        Email address
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="email"
-                          name="email"
-                          className="py-2.5 sm:py-3 px-4 block border-[1px] w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                        />
-                        <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                          <svg
-                            className="size-5 text-red-500"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            aria-hidden="true"
-                          >
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <p
-                        className="hidden text-xs text-red-600 mt-2"
-                        id="email-error"
-                      >
-                        Please include a valid email address so we can get back
-                        to you
-                      </p>
+                      <InputForm
+                        register={register}
+                        value={"admin@domain.com"}
+                        options={SignInInputOptions.email}
+                        errorField={errors.email}
+                      />
                     </div>
-                    {/* End Form Group */}
 
-                    {/* Form Group */}
                     <div>
-                      <div className="flex flex-wrap justify-between items-center gap-2">
-                        <label
-                          htmlFor="password"
-                          className="block text-sm mb-2 dark:text-white"
-                        >
-                          Password
-                        </label>
-                        <Link
-                          className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
-                          to={"/auth/recovery-account"}
-                        >
-                          Forgot password?
-                        </Link>
-                      </div>
-                      <div className="relative">
-                        <input
-                          type="password"
-                          id="password"
-                          name="password"
-                          className="py-2.5 sm:py-3 px-4 block w-full border-[1px] border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                          required
-                          aria-describedby="password-error"
-                        />
-                        <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                          <svg
-                            className="size-5 text-red-500"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            aria-hidden="true"
-                          >
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <p
-                        className="hidden text-xs text-red-600 mt-2"
-                        id="password-error"
-                      >
-                        8+ characters required
-                      </p>
+                      <InputForm
+                        register={register}
+                        value={"Admin@123"}
+                        options={SignInInputOptions.password}
+                        errorField={errors.password}
+                      />
                     </div>
-                    {/* End Form Group */}
 
                     {/* Checkbox */}
-                    <div className="flex items-center">
-                      <div className="flex">
+                    <div className="flex flex-wrap justify-between items-center gap-2">
+                      <div className="flex items-center">
                         <input
                           id="remember-me"
                           name="remember-me"
                           type="checkbox"
                           className="shrink-0 mt-0.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                         />
+                        <div className="ms-3">
+                          <label
+                            htmlFor="remember-me"
+                            className="text-sm dark:text-white"
+                          >
+                            Remember me
+                          </label>
+                        </div>
                       </div>
-                      <div className="ms-3">
-                        <label
-                          htmlFor="remember-me"
-                          className="text-sm dark:text-white"
-                        >
-                          Remember me
-                        </label>
-                      </div>
+
+                      <Link
+                        className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
+                        to={"/auth/recovery-account"}
+                      >
+                        Forgot password?
+                      </Link>
                     </div>
                     {/* End Checkbox */}
 
                     <button
                       type="submit"
+                      disabled={isSubmitting}
                       className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
                     >
                       Sign in

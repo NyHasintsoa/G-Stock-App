@@ -32,10 +32,8 @@ const authRoutes = async (fastify, options) => {
     { schema: authSchema },
     async (req, reply) => {
       try {
-        const token = await service.signIn(req.body);
-        reply.status(200).send({
-          token
-        });
+        const response = await service.signIn(req.body);
+        reply.status(200).send(response);
       } catch (error) {
         reply.status(403).send(error);
       }

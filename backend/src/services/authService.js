@@ -54,7 +54,7 @@ class AuthService {
    * @return {Object}
    */
   #generateToken(email, username, profile_image) {
-    return this.#fastify.jwt.sign(
+    const token = this.#fastify.jwt.sign(
       {
         email: email,
         username: username,
@@ -64,6 +64,14 @@ class AuthService {
         expiresIn: process.env.JWT_EXPIRATION || "1d"
       }
     );
+    return {
+      token,
+      userInfo: {
+        email,
+        username,
+        profile_image
+      }
+    };
   }
 
   /**

@@ -10,17 +10,17 @@ function InputForm({ register, value = null, options, errorField }) {
       <div className="relative">
         <input
           {...register(options.name, options.rules)}
-          defaultChecked={value}
+          defaultValue={value}
           type={options.type}
           className={
-            "py-1.5 sm:py-2 px-3 pe-11 block w-full border-[1px] " +
+            "py-1.5 sm:py-3 px-3 pe-11 block w-full border-[1px] " +
             (errorField === undefined ? "border-gray-200" : "border-red-600") +
             " shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
           }
         />
         <div
           className={
-            "absolute inset-y-0 end-0 pointer-events-none pe-3 pt-2" +
+            "absolute inset-y-0 end-0 pointer-events-none pe-3 pt-3" +
             (errorField !== undefined ? "" : " hidden")
           }
         >

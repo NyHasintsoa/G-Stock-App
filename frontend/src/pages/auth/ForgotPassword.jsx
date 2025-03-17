@@ -12,7 +12,7 @@ function ForgotPassword() {
                   Forgot password?
                 </h1>
                 <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                  Remember your password?
+                  Remember your password?&nbsp;
                   <Link
                     className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
                     to={"/auth/signin"}
