@@ -1,4 +1,4 @@
-import prelineReact from "preline/plugin"
+import prelinePlugin from "preline/plugin"
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -12,6 +12,6 @@ export default {
     extend: {},
   },
   plugins: [
-    prelineReact
+    prelinePlugin
   ],
 }

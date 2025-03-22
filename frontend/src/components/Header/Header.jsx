@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import Logo from "../Logo/Logo.jsx";
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher.jsx";
-import HeadDropdown from "./HeadDropdown.jsx";
 import UserDropdown from "./UserDropdown.jsx";
 
 function Header() {
@@ -16,8 +15,6 @@ function Header() {
             >
               <Logo />
             </Link>
-
-            <HeadDropdown />
           </div>
 
           <div className="w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3">
