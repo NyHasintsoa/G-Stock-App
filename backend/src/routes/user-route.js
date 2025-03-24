@@ -6,11 +6,10 @@ import UserService from "../services/userService.js";
  * @param {Object} options plugin options
  */
 const userRoutes = async (fastify, options) => {
-  const service = new UserService(await fastify.mysql.getConnection());
-
   fastify.get("/api/users", async (req, reply) => {
-    const [results] = await service.getAll();
-    reply.status(200).send(results);
+    reply.status(200).send({
+      message: "Get ALl Users"
+    });
   });
 
   fastify.get("/api/users/me", async (req, reply) => {

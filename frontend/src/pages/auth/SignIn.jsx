@@ -1,175 +1,137 @@
 import { Link } from "react-router";
-import { useForm } from "react-hook-form";
-import { handleGoogleOAuth } from "../../services/authService.js";
-import InputForm from "../../components/Inputs/InputForm.jsx";
-import { wait } from "../../utils/api.js";
-import useAuth from "../../hooks/useAuth.js";
 
-const SignInInputOptions = {
-  email: {
-    name: "email",
-    type: "email",
-    label: "Email",
-    rules: {
-      required: "Veuillez entrer votre adresse mail",
-      pattern: {
-        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-        message: "Adresse e-mail invalide"
-      },
-      minLength: {
-        value: 3,
-        message: "Ce champ doit comporter au moins 3 caractères"
-      }
-    }
-  },
-  password: {
-    name: "password",
-    type: "password",
-    label: "Mot de passe",
-    rules: {
-      required: "Veuillez entrer votre mot de passe",
-      minLength: {
-        value: 3,
-        message: "Ce champ doit comporter au moins 3 caractères"
-      }
-    }
-  }
-};
-
-function SignIn() {
-  const { register, handleSubmit, formState } = useForm();
-  const { loginUser } = useAuth();
-
-  const onSubmit = async (data) => {
-    await wait(3000);
-    await loginUser(data);
-  };
-
-  const { errors, isSubmitting } = formState;
+function Signin() {
   return (
     <>
-      <div className="bg-gray-100 h-screen flex items-center py-16 dark:bg-neutral-800">
-        <div className="w-full max-w-md mx-auto p-6">
-          <div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-2xs dark:bg-neutral-900 dark:border-neutral-700">
-            <div className="p-4 sm:p-7">
-              <div className="text-center">
-                <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
-                  Sign in
-                </h1>
-                <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                  Don&apos;t have an account yet?&nbsp;
-                  <Link
-                    className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
-                    to={"/auth/signup"}
-                  >
-                    Sign up here
-                  </Link>
-                </p>
-              </div>
-
-              <div className="mt-5">
-                <button
-                  type="button"
-                  onClick={handleGoogleOAuth}
-                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 cursor-pointer"
+      <div className="min-h-screen flex justify-center items-center">
+        <form className="bg-white mx-auto flex w-full max-w-md flex-col rounded-xl border border-border p-2 sm:p-10">
+          <div className="flex w-full flex-col gap-2">
+            <div className="text-center">
+              <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
+                Sign in
+              </h1>
+              <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
+                Don&apos;t have an account yet?&nbsp;
+                <Link
+                  className="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
+                  to={"/auth/signup"}
                 >
-                  <svg
-                    className="w-4 h-auto"
-                    width="46"
-                    height="47"
-                    viewBox="0 0 46 47"
-                    fill="none"
-                  >
-                    <path
-                      d="M46 24.0287C46 22.09 45.8533 20.68 45.5013 19.2112H23.4694V27.9356H36.4069C36.1429 30.1094 34.7347 33.37 31.5957 35.5731L31.5663 35.8669L38.5191 41.2719L38.9885 41.3306C43.4477 37.2181 46 31.1669 46 24.0287Z"
-                      fill="#4285F4"
-                    />
-                    <path
-                      d="M23.4694 47C29.8061 47 35.1161 44.9144 39.0179 41.3012L31.625 35.5437C29.6301 36.9244 26.9898 37.8937 23.4987 37.8937C17.2793 37.8937 12.0281 33.7812 10.1505 28.1412L9.88649 28.1706L2.61097 33.7812L2.52296 34.0456C6.36608 41.7125 14.287 47 23.4694 47Z"
-                      fill="#34A853"
-                    />
-                    <path
-                      d="M10.1212 28.1413C9.62245 26.6725 9.32908 25.1156 9.32908 23.5C9.32908 21.8844 9.62245 20.3275 10.0918 18.8588V18.5356L2.75765 12.8369L2.52296 12.9544C0.909439 16.1269 0 19.7106 0 23.5C0 27.2894 0.909439 30.8731 2.49362 34.0456L10.1212 28.1413Z"
-                      fill="#FBBC05"
-                    />
-                    <path
-                      d="M23.4694 9.07688C27.8699 9.07688 30.8622 10.9863 32.5344 12.5725L39.1645 6.11C35.0867 2.32063 29.8061 0 23.4694 0C14.287 0 6.36607 5.2875 2.49362 12.9544L10.0918 18.8588C11.9987 13.1894 17.25 9.07688 23.4694 9.07688Z"
-                      fill="#EB4335"
-                    />
-                  </svg>
-                  Sign in with Google
-                </button>
+                  Sign up here
+                </Link>
+              </p>
+            </div>
+            <div className="flex w-full flex-col gap-2">
+              <button type="button" className="btn gap-2 bg-gray-5">
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  strokeWidth="0"
+                  version="1.1"
+                  viewBox="0 0 48 48"
+                  enableBackground="new 0 0 48 48"
+                  className="h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill="#FFC107"
+                    d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+                  ></path>
+                  <path
+                    fill="#FF3D00"
+                    d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657        C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+                  ></path>
+                  <path
+                    fill="#4CAF50"
+                    d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36        c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+                  ></path>
+                  <path
+                    fill="#1976D2"
+                    d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571
+              c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+                  ></path>
+                </svg>
+                <span>Sign up with google</span>
+              </button>
+              <button type="button" className="btn gap-2 bg-gray-5">
+                <svg
+                  width="21"
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fab"
+                  data-icon="github"
+                  className="svg-inline--fa fa-github fa-w-16"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 496 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"
+                  ></path>
+                </svg>
 
-                <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">
-                  Or
+                <span>Sign up with github</span>
+              </button>
+            </div>
+          </div>
+          <div className="divider my-6 text-xs text-content2">or</div>
+
+          <div className="form-group">
+            <div className="form-field">
+              <label className="form-label">Email address</label>
+              <input
+                placeholder="Type here"
+                type="email"
+                className="input max-w-full focus:border-blue-500 focus:ring-blue-500"
+              />
+              <label className="form-label">
+                <span className="form-label-alt text-red-600">
+                  Please enter a valid email.
+                </span>
+              </label>
+            </div>
+            <div className="form-field">
+              <label className="form-label">Password</label>
+              <input
+                placeholder="Type here"
+                type="password"
+                className="input max-w-full border-red-600"
+              />
+              <label className="form-label">
+                <span className="form-label-alt text-red-600">
+                  Please enter a password
+                </span>
+              </label>
+            </div>
+            <div className="form-field">
+              <div className="form-control justify-between">
+                <div className="flex gap-2">
+                  <input
+                    type="checkbox"
+                    id="remember-checkbox"
+                    className="checkbox"
+                  />
+                  <label htmlFor="remember-checkbox">Remember me</label>
                 </div>
-
-                {/* Form */}
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="grid gap-y-4">
-                    <div>
-                      <InputForm
-                        register={register}
-                        value={"admin@domain.com"}
-                        options={SignInInputOptions.email}
-                        errorField={errors.email}
-                      />
-                    </div>
-
-                    <div>
-                      <InputForm
-                        register={register}
-                        value={"Admin@123"}
-                        options={SignInInputOptions.password}
-                        errorField={errors.password}
-                      />
-                    </div>
-
-                    {/* Checkbox */}
-                    <div className="flex flex-wrap justify-between items-center gap-2">
-                      <div className="flex items-center">
-                        <input
-                          id="remember-me"
-                          name="remember-me"
-                          type="checkbox"
-                          className="shrink-0 mt-0.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                        />
-                        <div className="ms-3">
-                          <label
-                            htmlFor="remember-me"
-                            className="text-sm dark:text-white"
-                          >
-                            Remember me
-                          </label>
-                        </div>
-                      </div>
-
-                      <Link
-                        className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
-                        to={"/auth/recovery-account"}
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
-                    {/* End Checkbox */}
-
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                    >
-                      Sign in
-                    </button>
-                  </div>
-                </form>
-                {/* End Form */}
+                <label className="form-label">
+                  <a className="link link-underline-hover link-primary text-sm">
+                    Forgot your password?
+                  </a>
+                </label>
+              </div>
+            </div>
+            <div className="form-field pt-3">
+              <div className="form-control justify-between">
+                <button type="button" className="btn btn-primary w-full">
+                  Sign in
+                </button>
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );
 }
 
-export default SignIn;
+export default Signin;

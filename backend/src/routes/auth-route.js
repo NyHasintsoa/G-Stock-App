@@ -9,7 +9,6 @@ import GoogleOAuthService from "../services/googleOAuthService.js";
  * @param {Object} options plugin options
  */
 const authRoutes = async (fastify, options) => {
-  const service = new AuthService(await fastify.mysql.getConnection(), fastify);
   const googleOAuthService = new GoogleOAuthService();
   const githubOAuthService = new GithubOAuthService();
 

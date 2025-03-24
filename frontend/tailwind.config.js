@@ -1,17 +1,11 @@
-import prelinePlugin from "preline/plugin"
+import rippleUi from "rippleui";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: "selector",
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/preline/preline.js"
-  ],
+  darkMode: "class",
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
-    extend: {},
+    extend: {}
   },
-  plugins: [
-    prelinePlugin
-  ],
-}
+  plugins: [rippleUi]
+};

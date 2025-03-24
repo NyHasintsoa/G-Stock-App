@@ -7,16 +7,22 @@ import CategoryService from "../services/categoryService.js";
  * @param {Object} options plugin options
  */
 const categoryRoutes = async (fastify, options) => {
-  const service = new CategoryService(await fastify.mysql.getConnection());
+  const categoryService = new CategoryService();
 
   fastify.get("/api/categories", async (req, reply) => {
-    const [results] = await service.getAll();
-    reply.status(200).send(results);
+    reply.status(200).send({
+      message: "Get ALl Categories",
+      data: await categoryService.getAll()
+    });
   });
 
   fastify.get("/api/categories/:id", async (req, reply) => {
     try {
-      reply.status(200).send(await service.getById(req.params.id));
+      const { id } = req.params;
+      reply.status(200).send({
+        message: "Get Category By Id",
+        data: await categoryService.getById(id)
+      });
     } catch (error) {
       reply.status(404).send(error);
     }
@@ -27,12 +33,12 @@ const categoryRoutes = async (fastify, options) => {
     { schema: categorySchema },
     async (req, reply) => {
       try {
-        await service.addCategory(req.body);
+        await categoryService.addCategory(req.body);
         reply.status(201).send({
-          message: "Category Added"
+          message: "Category Added Successfully"
         });
       } catch (error) {
-        reply.status(500).send(error)
+        reply.status(500).send(error);
       }
     }
   );
@@ -42,7 +48,8 @@ const categoryRoutes = async (fastify, options) => {
     { schema: categorySchema },
     async (req, reply) => {
       try {
-        await service.updateCategoryById(req.params.id, req.body);
+        const { id } = req.params;
+        await categoryService.updateCategoryById(id, req.body);
         reply.status(200).send({
           message: "Category updated successfully"
         });

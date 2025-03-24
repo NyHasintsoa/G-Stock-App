@@ -2,61 +2,58 @@ import fs from "node:fs";
 import { pipeline } from "node:stream/promises";
 import generateId from "../utils/generateId.js";
 import { deleteUploadedFile, uploadPath } from "../utils/pathConfig.js";
+import ParentService from "./ParentService.js";
+import ProductModel from "../models/ProductModel.js";
+import CategoryModel from "../models/CategoryModel.js";
+import SupplierModel from "../models/SupplierModel.js";
+import TypeModel from "../models/TypeModel.js";
+import CategoryService from "./CategoryService.js";
 
-class ProductService {
-  /**
-   * @type {import("@fastify/mysql").MySQLPromiseConnection} mysqlConnection
-   */
-  #connection;
+class ProductService extends ParentService {
+  _model = ProductModel;
 
-  constructor(connection) {
-    this.#connection = connection;
-  }
+  #categoryService;
 
-  #selectQuery() {
-    return (
-      "SELECT `product`.`id` AS id,`product`.`designation` AS designation," +
-      "`product`.`price` AS price,`product`.`path_img` AS path_img," +
-      "`category`.`name` AS category,`unite`.`name` AS unite FROM `product` " +
-      "LEFT JOIN `category` ON `product`.`category_id` = `category`.`id` " +
-      "LEFT JOIN `unite` ON `product`.`unite_id` = `unite`.`id`"
-    );
+  constructor() {
+    super();
+    this.#categoryService = new CategoryService();
   }
 
   async getAll() {
-    return await this.#connection.query(this.#selectQuery());
-  }
-
-  /**
-   * Get Product By Id
-   * @param {string} productId Product Id
-   */
-  async getById(productId) {
-    const [result] = await this.#connection.query(
-      this.#selectQuery() + " WHERE `product`.`id` = ?",
-      [productId]
-    );
-    if (result.length == 0) throw new Error("Product not found");
-    return result[0];
+    return await this._model.findAll({
+      attributes: {
+        exclude: ["supplierId", "typesProductId"]
+      },
+      include: [
+        {
+          model: CategoryModel
+        },
+        { model: SupplierModel },
+        { model: TypeModel }
+      ]
+    });
   }
 
   /**
    * Add product to the database
-   * @param {import("fastify").FastifyRequest} req Request from client
+   * @param {Object} req Request from client
    */
   async addProduct(req) {
-    await this.#connection.execute(
-      "INSERT INTO `product` " +
-        "(`id`, `designation`, `price`, `category_id`, `unite_id`) " +
-        "VALUES (?,?,?,?,?)",
-      [
-        generateId(req.designation),
-        req.designation,
-        req.price,
-        req.category_id,
-        req.unite_id
-      ]
-    );
+    const categories = [];
+    for await (const categoryId of req.categoriesId) {
+      categories.push(await this.#categoryService.getById(categoryId));
+    }
+    const product = await this._model.create({
+      id: generateId(req.name),
+      name: req.name,
+      price: req.price,
+      description: req.description,
+      supplierId: req.supplierId,
+      typesProductId: req.typesProductId,
+      CategoryModels: categories
+    });
+    product.addCategoryModels(categories);
+    return product;
   }
 
   /**
@@ -64,40 +61,14 @@ class ProductService {
    * @param {Object} req Request body
    * @param {string} productId Product Id
    */
-  async updateProduct(req, productId) {
-    await this.#connection.execute(
-      "UPDATE `product` SET `designation`=?,`price`=?,`category_id`=?,`unite_id`=? " +
-        "WHERE `product`.`id`=?",
-      [req.designation, req.price, req.category_id, req.unite_id, productId]
-    );
-  }
+  async updateProduct(req, productId) {}
 
   /**
    * Upload Product Image To the disk
    * @param {import("fastify").FastifyRequest} req Request from client
    * @param {string} productId Product Id
    */
-  async uploadImage(req, productId) {
-    const [result] = await this.#connection.query(
-      "SELECT * FROM `product` WHERE `id` = ?",
-      [productId]
-    );
-    if (result.length == 0) throw new Error("Product not found");
-
-    /** @type {string} Product Path Image */
-    const productImg = result[0].path_img;
-    if (productImg !== null) {
-      const [folder, file] = productImg.split("/");
-      await deleteUploadedFile("products", folder, file);
-    }
-    const { file, filename } = await req.file();
-    const { path, time } = await uploadPath("products", filename);
-    await pipeline(file, fs.createWriteStream(path));
-    await this.#connection.execute(
-      "UPDATE `product` SET `path_img` = ? WHERE `id` = ?",
-      [`${time}/${filename}`, productId]
-    );
-  }
+  async uploadImage(req, productId) {}
 }
 
 export default ProductService;

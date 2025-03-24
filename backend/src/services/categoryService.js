@@ -1,39 +1,31 @@
+import CategoryModel from "../models/CategoryModel.js";
 import generateId from "../utils/generateId.js";
+import ParentService from "./ParentService.js";
 
-class CategoryService {
+class CategoryService extends ParentService {
+  _model = CategoryModel;
+
   /**
-   * @type {import("@fastify/mysql").MySQLPromiseConnection} mysqlConnection
+   * Add New Category
+   * @param {Object} req Category Fields
    */
-  #connection;
-
-  constructor(connection) {
-    this.#connection = connection;
-  }
-
-  async getAll() {
-    return await this.#connection.query("SELECT * FROM category");
-  }
-
-  async getById(categoryId) {
-    const [result] = await this.#connection.query(
-      "SELECT * FROM category WHERE id = ?",
-      [categoryId]
-    );
-    if (result.length == 0) throw new Error("Category not found");
-    return result[0];
-  }
-
   async addCategory(req) {
-    await this.#connection.execute(
-      "INSERT INTO `category` (`id`, `name`) VALUES (?,?)",
-      [generateId(req.name), req.name]
-    );
+    await this._model.create({
+      id: generateId(req.name),
+      name: req.name
+    });
   }
 
   async updateCategoryById(categoryId, req) {
-    await this.#connection.execute(
-      "UPDATE `category` SET `name` = ? WHERE `category`.`id` = ?",
-      [req.name, categoryId]
+    await this._model.update(
+      {
+        name: req.name
+      },
+      {
+        where: {
+          id: categoryId
+        }
+      }
     );
   }
 }

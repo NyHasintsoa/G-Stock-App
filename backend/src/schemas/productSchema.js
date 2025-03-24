@@ -1,21 +1,21 @@
 const productBodyJsonSchema = {
   type: "object",
-  required: ["designation", "price", "category_id", "unite_id"],
+  required: ["name", "price", "supplierId", "typesProductId", "categoriesId"],
   properties: {
-    designation: {
+    name: {
       type: "string"
     },
     price: {
       type: "number"
     },
-    category_id: {
+    supplierId: {
       type: "string"
     },
-    unite_id: {
+    typesProductId: {
       type: "string"
     },
-    path_img: {
-      type: "string"
+    categoriesId: {
+      type: "array"
     }
   }
 };

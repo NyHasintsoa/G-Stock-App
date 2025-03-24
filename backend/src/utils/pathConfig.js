@@ -52,4 +52,4 @@ const deleteUploadedFile = async (parentFolder, folder, filename) => {
   }
 };
 
-export { uploadPath, getUploadedFile, deleteUploadedFile };
+export { uploadPath, getUploadedFile, deleteUploadedFile, pathDir };

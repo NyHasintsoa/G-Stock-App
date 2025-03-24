@@ -1,22 +1,19 @@
 import { createBrowserRouter } from "react-router";
-import AdminLayout from "./AdminLayout.jsx";
-import ListProduct from "../pages/product/ListProduct/ListProduct.jsx";
-import UpdateProduct from "../pages/product/UpdateProduct.jsx";
 import Home from "../pages/home/Home.jsx";
+import ErrorPage from "../pages/error/ErrorPage.jsx";
 import BaseLayout from "./BaseLayout.jsx";
+import AdminLayout from "./AdminLayout.jsx";
+import Loader from "../components/loader/Loader.jsx";
 import Dashboard from "../pages/dashboard/Dashboard.jsx";
-import RouteError from "../pages/route-error/RouteError.jsx";
 import Layout from "./Layout.jsx";
+import Signin from "../pages/auth/Signin.jsx";
 import SignUp from "../pages/auth/SignUp.jsx";
-import ForgotPassword from "../pages/auth/ForgotPassword.jsx";
-import About from "../pages/about/About.jsx";
-import AddProduct from "../pages/product/AddProduct/AddProduct.jsx";
-import SignIn from "../pages/auth/SignIn.jsx";
+import SupplierProducts from "../pages/supplier/SupplierProducts.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement: <RouteError />,
+    errorElement: <ErrorPage />,
     children: [
       {
         element: <BaseLayout />,
@@ -26,8 +23,8 @@ const router = createBrowserRouter([
             element: <Home />
           },
           {
-            path: "/about",
-            element: <About />
+            path: "/supplier/products",
+            element: <SupplierProducts />
           }
         ]
       },
@@ -36,15 +33,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/auth/signin",
-            element: <SignIn />
+            element: <Signin />
           },
           {
             path: "/auth/signup",
             element: <SignUp />
-          },
-          {
-            path: "/auth/recovery-account",
-            element: <ForgotPassword />
           }
         ]
       }
@@ -52,6 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
+    errorElement: <ErrorPage />,
     children: [
       {
         element: <AdminLayout />,
@@ -61,16 +55,8 @@ const router = createBrowserRouter([
             element: <Dashboard />
           },
           {
-            path: "products",
-            element: <ListProduct />
-          },
-          {
-            path: "products/new",
-            element: <AddProduct />
-          },
-          {
-            path: "products/update/:productId",
-            element: <UpdateProduct />
+            path: "loader",
+            element: <Loader />
           }
         ]
       }

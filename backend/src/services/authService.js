@@ -1,13 +1,8 @@
 import bcrypt from "bcryptjs";
-import UserService from "./userService.js";
+import UserService from "./UserService.js";
 import fastify from "fastify";
 
 class AuthService {
-  /**
-   * @type {import("@fastify/mysql").MySQLPromiseConnection} mysqlConnection
-   */
-  #connection;
-
   /**
    * @type {{import("fastify").FastifyInstance} fastify}
    */
@@ -24,7 +19,6 @@ class AuthService {
   #salt = 10;
 
   constructor(connection, fastify) {
-    this.#connection = connection;
     this.#userService = new UserService(connection);
     this.#fastify = fastify;
   }

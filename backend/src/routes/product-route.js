@@ -1,5 +1,5 @@
 import productSchema from "../schemas/productSchema.js";
-import ProductService from "../services/productService.js";
+import ProductService from "../services/ProductService.js";
 import { getUploadedFile } from "../utils/pathConfig.js";
 
 /**
@@ -8,48 +8,38 @@ import { getUploadedFile } from "../utils/pathConfig.js";
  * @param {Object} options plugin options
  */
 const productRoutes = async (fastify, options) => {
-  const service = new ProductService(await fastify.mysql.getConnection());
+  const productService = new ProductService();
 
   fastify.get("/api/products", async (req, reply) => {
-    const [results] = await service.getAll();
-    reply.status(200).send(results);
+    reply.status(200).send({
+      message: "Get ALl Products",
+      data: await productService.getAll()
+    });
   });
 
   fastify.get("/api/products/:id", async (req, reply) => {
     try {
-      reply.status(200).send(await service.getById(req.params.id));
+      reply.status(200).send({
+        message: "Get Product By Id"
+      });
     } catch (error) {
       reply.status(404).send(error);
     }
   });
 
-  fastify.get(
-    "/api/upload/products/images/:folder/:filename",
-    async (req, reply) => {
-      const { folder, filename } = req.params;
-      try {
-        const { contentType, file } = await getUploadedFile(
-          "products",
-          folder,
-          filename
-        );
-        if (contentType) reply.type(contentType).send(file);
-        else reply.send(file);
-      } catch (error) {
-        reply.status(404).send(error);
-      }
-    }
-  );
-
   fastify.post(
     "/api/products",
     { schema: productSchema },
     async (req, reply) => {
-      reply.statusCode = 201;
-      await service.addProduct(req.body);
-      reply.status(201).send({
-        message: "Product Added Successfully"
-      });
+      try {
+        const result = await productService.addProduct(req.body);
+        reply.status(201).send({
+          message: "Product Added Successfully",
+          data: result
+        });
+      } catch (error) {
+        reply.status(500).send(error);
+      }
     }
   );
 
@@ -71,7 +61,6 @@ const productRoutes = async (fastify, options) => {
 
   fastify.put("/api/products/upload/:id", async (req, reply) => {
     try {
-      await service.uploadImage(req, req.params.id);
       reply.status(200).send({
         message: "Product Image uploaded successfully"
       });
