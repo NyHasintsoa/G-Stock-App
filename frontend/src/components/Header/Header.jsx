@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import NavbarEnd from "./NavbarEnd.jsx";
 
 function Header() {
@@ -5,7 +6,9 @@ function Header() {
     <>
       <div className="navbar navbar-sticky navbar-glass mt-2 rounded-lg">
         <div className="navbar-start">
-          <a className="navbar-item">Ripple UI</a>
+          <Link to={"/"} className="navbar-item">
+            Ripple UI
+          </Link>
         </div>
         <NavbarEnd />
       </div>

@@ -1,7 +1,28 @@
 import { Link } from "react-router";
-import ProductCard from "../../components/productCard/ProductCard.jsx";
+import CategoryCard from "../../components/categoryCard/CategoryCard.jsx";
+import { useCallback, useEffect, useState, useTransition } from "react";
+import { wait } from "../../utils/api.js";
+import categoryService from "../../services/CategoryService.js";
+import CategoryItems from "./CategoryItems.jsx";
+import Spinner from "../../components/spinner/Spinner.jsx";
 
-function SupplierProducts() {
+function ListCategory() {
+  const [categories, setCategories] = useState([]);
+  const [loading, startTransition] = useTransition();
+
+  const getAllCategories = useCallback(() => {
+    startTransition(async () => {
+      await wait();
+      await categoryService.getAll().then((res) => {
+        setCategories(res.data);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
   return (
     <>
       <div className="breadcrumbs text-lg">
@@ -9,25 +30,14 @@ function SupplierProducts() {
           <li>
             <Link to={"/"}>Accueil</Link>
           </li>
-          <li>
-            <Link to={"/supplier"}>Fournisseur</Link>
-          </li>
-          <li>Nom du fournisseur</li>
+          <li>Catégorie</li>
         </ul>
       </div>
       <div className="my-5">
-        <h1 className="font-semibold text-xl">
-          Liste des produits du fournisseur Test Fournisseur
-        </h1>
-        <p className="mt-3 text-gray-500">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam excepturi
-          iure dicta provident exercitationem quaerat fuga autem, laborum magni,
-          possimus ex voluptates reprehenderit amet, tenetur rerum quo
-          consequatur perferendis blanditiis?
-        </p>
+        <h1 className="font-semibold text-xl">Liste des Catégorie</h1>
       </div>
       <div className="flex justify-between items-center">
-        <div className="text-gray-500">Il y a 25 produits</div>
+        <div className="text-gray-500">Il y a 25 fournisseur</div>
         <div className="flex items-center gap-3">
           <span className="w-full text-gray-600">Trier par :</span>
           <select className="select min-w-72">
@@ -39,18 +49,14 @@ function SupplierProducts() {
           </select>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-4 my-10">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-      </div>
+
+      {!loading ? (
+        <div className="grid grid-cols-4 gap-4 my-10">
+          <CategoryItems categories={categories} />
+        </div>
+      ) : (
+        <Spinner />
+      )}
       <div className="flex justify-center items-center">
         <div>
           <div className="pagination">
@@ -99,4 +105,4 @@ function SupplierProducts() {
   );
 }
 
-export default SupplierProducts;
+export default ListCategory;

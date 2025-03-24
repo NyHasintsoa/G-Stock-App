@@ -1,13 +1,9 @@
+import UserModel from "../models/UserModel.js";
 import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 
 class UserService extends ParentService {
-  /**
-   * Get User By Id if exist
-   * @param {string} userId User id
-   * @return {Object}
-   */
-  async getById(userId) {}
+  _model = UserModel;
 
   /**
    * Get User By email if it's exist
@@ -15,6 +11,13 @@ class UserService extends ParentService {
    * @return {Object}
    */
   async getByEmail(email) {}
+
+  /**
+   * Get User By username if it's exist
+   * @param {string} username User's username
+   * @return {Object}
+   */
+  async getByUsername(username) {}
 
   /**
    * Add User Local to database

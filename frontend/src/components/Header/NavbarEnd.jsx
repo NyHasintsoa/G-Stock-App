@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { LiaShoppingCartSolid } from "react-icons/lia";
 import avatarImg from "../../assets/unknown.jpg";
 
 function NavbarEnd() {
@@ -6,6 +7,13 @@ function NavbarEnd() {
   return (
     <>
       <div className="navbar-end">
+        <label htmlFor="user-cart-list" className="btn btn-primary">
+          <LiaShoppingCartSolid size={25} />
+          Panier (50)
+        </label>
+        <Link to={"/supplier"} className="navbar-item">
+          Nos Fournisseur
+        </Link>
         {isConnected ? (
           <div className="avatar avatar-ring avatar-md">
             <div className="dropdown-container">
@@ -27,9 +35,6 @@ function NavbarEnd() {
           </div>
         ) : (
           <>
-            <Link to={"/"} className="navbar-item">
-              Home
-            </Link>
             <Link to={"/auth/signin"} className="navbar-item">
               Sign Up
             </Link>

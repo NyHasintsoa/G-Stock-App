@@ -1,8 +1,8 @@
-function Loader() {
+function Spinner() {
   return (
     <>
-      <div className="min-h-screen max-h-screen min-w-full flex items-center justify-center">
-        <div className="spinner-dot-circle size-60">
+      <div className="flex justify-center items-center my-28">
+        <div className="spinner-dot-circle size-28">
           <div className="spinner-dot"></div>
           <div className="spinner-dot"></div>
           <div className="spinner-dot"></div>
@@ -17,4 +17,4 @@ function Loader() {
   );
 }
 
-export default Loader;
+export default Spinner;

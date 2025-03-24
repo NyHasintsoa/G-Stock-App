@@ -9,6 +9,10 @@ import Layout from "./Layout.jsx";
 import Signin from "../pages/auth/Signin.jsx";
 import SignUp from "../pages/auth/SignUp.jsx";
 import SupplierProducts from "../pages/supplier/SupplierProducts.jsx";
+import ListSupplier from "../pages/supplier/ListSupplier.jsx";
+import ListCategory from "../pages/category/ListCategory.jsx";
+import CategoryProducts from "../pages/category/CategoryProducts.jsx";
+import ProductInfo from "../pages/product/ProductInfo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,8 +27,24 @@ const router = createBrowserRouter([
             element: <Home />
           },
           {
-            path: "/supplier/products",
+            path: "/supplier",
+            element: <ListSupplier />
+          },
+          {
+            path: "/supplier/:idSupplier/products",
             element: <SupplierProducts />
+          },
+          {
+            path: "/category",
+            element: <ListCategory />
+          },
+          {
+            path: "/category/:idcategory/products",
+            element: <CategoryProducts />
+          },
+          {
+            path: "/product/:idProduct",
+            element: <ProductInfo />
           }
         ]
       },

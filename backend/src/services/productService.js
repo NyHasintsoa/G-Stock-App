@@ -26,7 +26,10 @@ class ProductService extends ParentService {
       },
       include: [
         {
-          model: CategoryModel
+          model: CategoryModel,
+          attributes: {
+            exclude: ["products_categories"]
+          }
         },
         { model: SupplierModel },
         { model: TypeModel }

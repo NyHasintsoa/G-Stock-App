@@ -2,21 +2,28 @@ import ProductModel from "./ProductModel.js";
 import SupplierModel from "./SupplierModel.js";
 import TypeModel from "./TypeModel.js";
 import CategoryModel from "./CategoryModel.js";
+import UserModel from "./UserModel.js";
 // import sequelize from "./DatabaseConnection.js";
 
 ProductModel.belongsToMany(CategoryModel, {
   through: "products_categories",
   timestamps: false
 });
+
 ProductModel.belongsTo(SupplierModel, {
-  foreignKey: "supplierId"
+  foreignKey: "supplierId",
+  onDelete: "RESTRICT",
+  onUpdate: "RESTRICT"
 });
+
 ProductModel.belongsTo(TypeModel, {
-  foreignKey: "typesProductId"
+  foreignKey: "typesProductId",
+  onDelete: "RESTRICT",
+  onUpdate: "RESTRICT"
 });
 
 // Migration de la base de donnée
-// sequelize.drop()
+// await sequelize.drop();
 // sequelize
 // .sync({ force: true })
 // .then(() => {
