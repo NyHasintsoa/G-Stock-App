@@ -20,6 +20,17 @@ const supplierRoutes = async (fastify, options) => {
     }
   });
 
+  fastify.get("/api/suppliers/paged", async (req, reply) => {
+    try {
+      reply.status(200).send({
+        message: "Get All Suppliers",
+        data: await supplierService.getAndCountAll(req)
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
   fastify.post(
     "/api/suppliers",
     { schema: supplierSchema },

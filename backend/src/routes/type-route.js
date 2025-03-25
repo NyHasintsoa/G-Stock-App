@@ -16,6 +16,13 @@ const typeRoutes = async (fastify, options) => {
     });
   });
 
+  fastify.get("/api/types/paged", async (req, reply) => {
+    reply.status(200).send({
+      message: "Get All Types Product",
+      data: await typeService.getAndCountAll(req)
+    });
+  });
+
   fastify.get("/api/types/:id", async (req, reply) => {
     try {
       const { id } = req.params;

@@ -1,7 +1,9 @@
 import ParentService from "./ParentService.js";
 
 class SupplierService extends ParentService {
-  _requestPrefix = "/api/suppliers";
+  constructor() {
+    super("/api/suppliers");
+  }
 }
 
 const supplierService = new SupplierService();

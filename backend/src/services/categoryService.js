@@ -16,6 +16,10 @@ class CategoryService extends ParentService {
     });
   }
 
+  async getPagedCategories() {
+    await this._model.count();
+  }
+
   async updateCategoryById(categoryId, req) {
     await this._model.update(
       {

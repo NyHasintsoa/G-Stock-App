@@ -1,11 +1,11 @@
 import ParentService from "./ParentService.js";
 
 class TypeService extends ParentService {
-  constructor(requestPrefix) {
-    super(requestPrefix);
+  constructor() {
+    super("/api/types");
   }
 }
 
-const typeService = new TypeService("/api/types");
+const typeService = new TypeService();
 
 export default typeService;

@@ -1,6 +1,6 @@
-function PreviousBtn() {
+function PreviousBtn({ onClick, disabled }) {
   return (
-    <button className="btn">
+    <button className="btn" onClick={onClick} disabled={disabled}>
       <svg
         width="18"
         height="18"

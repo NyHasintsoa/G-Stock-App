@@ -1,28 +1,18 @@
 import { Link } from "react-router";
-import { useCallback, useEffect, useState, useTransition } from "react";
 import supplierService from "../../services/SupplierService.js";
 import SupplierItems from "./SupplierItems.jsx";
-import { wait } from "../../utils/api.js";
 import Spinner from "../../components/spinner/Spinner.jsx";
-import PreviousBtn from "../../components/pagination/PreviousBtn.jsx";
-import NextBtn from "../../components/pagination/NextBtn.jsx";
+import usePagination from "../../hooks/usePagination.jsx";
+import Pagination from "../../components/pagination/Pagination.jsx";
 
 function ListSupplier() {
-  const [suppliers, setSuppliers] = useState([]);
-  const [loading, startTransition] = useTransition();
-
-  const getAllSuppliers = useCallback(() => {
-    startTransition(async () => {
-      await wait();
-      await supplierService.getAll().then((res) => {
-        setSuppliers(res.data);
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    getAllSuppliers();
-  }, []);
+  const {
+    rows: suppliers,
+    page,
+    totalPages,
+    loading,
+    onPageChange
+  } = usePagination(supplierService.getAllPaginated.bind(supplierService), 8);
 
   return (
     <>
@@ -65,20 +55,17 @@ function ListSupplier() {
         <Spinner />
       )}
 
-      <div className="flex justify-center items-center">
-        <div>
-          <div className="pagination">
-            <PreviousBtn />
-            <button className="btn btn-active">1</button>
-            <button className="btn">2</button>
-            <button disabled className="btn">
-              ...
-            </button>
-            <button className="btn">3</button>
-            <NextBtn />
+      {totalPages !== 1 && (
+        <div className="flex justify-center items-center">
+          <div>
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+            />
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

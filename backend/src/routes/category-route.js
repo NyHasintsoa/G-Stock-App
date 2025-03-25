@@ -16,6 +16,17 @@ const categoryRoutes = async (fastify, options) => {
     });
   });
 
+  fastify.get("/api/categories/paged", async (req, reply) => {
+    try {
+      reply.status(200).send({
+        message: "Get Paged Categories",
+        data: await categoryService.getAndCountAll(req)
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
   fastify.get("/api/categories/:id", async (req, reply) => {
     try {
       const { id } = req.params;

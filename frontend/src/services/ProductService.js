@@ -1,11 +1,11 @@
 import ParentService from "./ParentService.js";
 
 class ProductService extends ParentService {
-  constructor(requestPrefix) {
-    super(requestPrefix);
+  constructor() {
+    super("/api/products");
   }
 }
 
-const productService = new ProductService("/api/products");
+const productService = new ProductService();
 
 export default productService;
