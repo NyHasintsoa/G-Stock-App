@@ -31,6 +31,17 @@ const supplierRoutes = async (fastify, options) => {
     }
   });
 
+  fastify.get("/api/suppliers/:id/products", async (req, reply) => {
+    try {
+      reply.status(200).send({
+        message: "Get Product Associed To Supplier",
+        data: await supplierService.getProductToSupplierById(req.params.id)
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
   fastify.post(
     "/api/suppliers",
     { schema: supplierSchema },

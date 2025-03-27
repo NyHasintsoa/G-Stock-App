@@ -14,14 +14,6 @@ function Home() {
         <ProductSkeleton />
         <ProductSkeleton />
         <ProductSkeleton />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
       </div>
     </>
   );

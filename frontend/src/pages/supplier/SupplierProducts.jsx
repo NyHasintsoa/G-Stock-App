@@ -1,7 +1,35 @@
-import { Link } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import ProductCard from "../../components/productCard/ProductCard.jsx";
+import supplierService from "../../services/SupplierService.js";
+import { useCallback, useEffect, useState, useTransition } from "react";
+import Spinner from "../../components/spinner/Spinner.jsx";
+import ProductItems from "../../components/productItems/ProductItems.jsx";
+import { wait } from "../../utils/api.js";
 
 function SupplierProducts() {
+  const [item, setItem] = useState({});
+  const { idSupplier } = useParams();
+  const [loading, startTransition] = useTransition();
+  const navigate = useNavigate();
+
+  const getAllProductsToBySupplierId = useCallback(() => {
+    startTransition(async () => {
+      try {
+        await wait();
+        const { data } = await supplierService.getProductBySupplierId(
+          idSupplier
+        );
+        setItem(data);
+      } catch (error) {
+        navigate("/error/not-found");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    getAllProductsToBySupplierId();
+  }, []);
+
   return (
     <>
       <div className="breadcrumbs text-lg">
@@ -12,7 +40,7 @@ function SupplierProducts() {
           <li>
             <Link to={"/supplier"}>Fournisseur</Link>
           </li>
-          <li>Nom du fournisseur</li>
+          <li>{item.name}</li>
         </ul>
       </div>
       <div className="my-5">
@@ -39,18 +67,25 @@ function SupplierProducts() {
           </select>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-4 my-10">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-      </div>
+
+      {!loading && item.products !== undefined ? (
+        <>
+          {item.products.length !== 0 ? (
+            <div className="grid grid-cols-4 gap-4 my-10">
+              <ProductItems products={item.products} />
+            </div>
+          ) : (
+            <div className="my-20">
+              <h1 className="text-center font-semibold text-2xl">
+                Cet fournisseur n'est associé à aucun produit
+              </h1>
+            </div>
+          )}
+        </>
+      ) : (
+        <Spinner />
+      )}
+
       <div className="flex justify-center items-center">
         <div>
           <div className="pagination">

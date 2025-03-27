@@ -23,6 +23,17 @@ const typeRoutes = async (fastify, options) => {
     });
   });
 
+  fastify.get("/api/types/:id/products", async (req, reply) => {
+    try {
+      reply.status(200).send({
+        message: "Get Product Associed To Type",
+        data: await typeService.getProductToTypeById(req.params.id)
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
   fastify.get("/api/types/:id", async (req, reply) => {
     try {
       const { id } = req.params;

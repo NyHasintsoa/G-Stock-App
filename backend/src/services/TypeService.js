@@ -1,9 +1,22 @@
+import ProductModel from "../models/ProductModel.js";
 import TypeModel from "../models/TypeModel.js";
 import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 
 class TypeService extends ParentService {
   _model = TypeModel;
+
+  async getProductToTypeById(id) {
+    const typeProduct = await this._model.findByPk(id, {
+      include: [
+        {
+          model: ProductModel
+        }
+      ]
+    });
+    if (typeProduct == null) throw new Error("Type product Not Found");
+    return typeProduct;
+  }
 
   /**
    * Add Type Product

@@ -10,17 +10,26 @@ ProductModel.belongsToMany(CategoryModel, {
   timestamps: false
 });
 
+CategoryModel.belongsToMany(ProductModel, {
+  through: "products_categories",
+  timestamps: false
+});
+
 ProductModel.belongsTo(SupplierModel, {
   foreignKey: "supplierId",
   onDelete: "RESTRICT",
   onUpdate: "RESTRICT"
 });
 
+SupplierModel.hasMany(ProductModel);
+
 ProductModel.belongsTo(TypeModel, {
   foreignKey: "typesProductId",
   onDelete: "RESTRICT",
   onUpdate: "RESTRICT"
 });
+
+TypeModel.hasMany(ProductModel);
 
 // Migration de la base de donnée
 // await sequelize.drop();

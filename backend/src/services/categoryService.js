@@ -1,4 +1,5 @@
 import CategoryModel from "../models/CategoryModel.js";
+import ProductModel from "../models/ProductModel.js";
 import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 
@@ -16,8 +17,19 @@ class CategoryService extends ParentService {
     });
   }
 
-  async getPagedCategories() {
-    await this._model.count();
+  async getProductToCategoryById(id) {
+    const category = await this._model.findByPk(id, {
+      include: [
+        {
+          model: ProductModel,
+          attributes: {
+            exclude: ["products_categories"]
+          }
+        }
+      ]
+    });
+    if (category == null) throw new Error("Category not found");
+    return category;
   }
 
   async updateCategoryById(categoryId, req) {

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { wait } from "../utils/api.js";
+import { useNavigate } from "react-router";
 
 /**
  * Create Pagination Hook
@@ -18,6 +19,7 @@ const usePagination = (apiFetch, itemsPerPage = 10) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, startTransition] = useTransition();
+  const navigate = useNavigate();
 
   const onPageChange = (pageNumber) => {
     setPage(pageNumber);
@@ -25,10 +27,14 @@ const usePagination = (apiFetch, itemsPerPage = 10) => {
 
   const fetchDataPaginated = useCallback(() => {
     startTransition(async () => {
-      await wait();
-      const { data } = await apiFetch(page, 8);
-      setRows(data.rows);
-      if (totalPages === 0) setTotalPages(data.page.totalPages);
+      try {
+        await wait();
+        const { data } = await apiFetch(page, 8);
+        setRows(data.rows);
+        if (totalPages === 0) setTotalPages(data.page.totalPages);
+      } catch (error) {
+        navigate("/error/not-found");
+      }
     });
   }, [page, itemsPerPage]);
 

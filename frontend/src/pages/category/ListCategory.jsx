@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { wait } from "../../utils/api.js";
 import categoryService from "../../services/CategoryService.js";
@@ -11,6 +11,7 @@ function ListCategory() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, startTransition] = useTransition();
+  const navigate = useNavigate();
 
   const onPageChange = (pageNumber) => {
     setPage(pageNumber);
@@ -18,10 +19,14 @@ function ListCategory() {
 
   const getAllCategories = useCallback(() => {
     startTransition(async () => {
-      await wait();
-      const { data } = await categoryService.getAllPaginated(page, 8);
-      setCategories(data.rows);
-      if (totalPages === 0) setTotalPages(data.page.totalPages);
+      try {
+        await wait();
+        const { data } = await categoryService.getAllPaginated(page, 8);
+        setCategories(data.rows);
+        if (totalPages === 0) setTotalPages(data.page.totalPages);
+      } catch (error) {
+        navigate("/error/not-found");
+      }
     });
   }, [page]);
 

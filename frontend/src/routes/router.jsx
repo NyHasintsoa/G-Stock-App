@@ -13,6 +13,7 @@ import ListSupplier from "../pages/supplier/ListSupplier.jsx";
 import ListCategory from "../pages/category/ListCategory.jsx";
 import CategoryProducts from "../pages/category/CategoryProducts.jsx";
 import ProductInfo from "../pages/product/ProductInfo.jsx";
+import NotFoundError from "../pages/error/NotFoundError.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
           {
             path: "/product/:idProduct",
             element: <ProductInfo />
+          },
+          {
+            path: "/error/not-found",
+            element: <NotFoundError />
           }
         ]
       },

@@ -1,5 +1,5 @@
 import { categorySchema } from "../schemas/categorySchema.js";
-import CategoryService from "../services/categoryService.js";
+import CategoryService from "../services/CategoryService.js";
 
 /**
  * Encapsulates the routes
@@ -21,6 +21,17 @@ const categoryRoutes = async (fastify, options) => {
       reply.status(200).send({
         message: "Get Paged Categories",
         data: await categoryService.getAndCountAll(req)
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
+  fastify.get("/api/categories/:id/products", async (req, reply) => {
+    try {
+      reply.status(200).send({
+        message: "Get Product Associed To Categorie",
+        data: await categoryService.getProductToCategoryById(req.params.id)
       });
     } catch (error) {
       reply.status(500).send(error);

@@ -1,7 +1,34 @@
-import { Link } from "react-router";
-import ProductCard from "../../components/productCard/ProductCard.jsx";
+import { Link, useNavigate, useParams } from "react-router";
+import { useCallback, useEffect, useState, useTransition } from "react";
+import { wait } from "../../utils/api.js";
+import categoryService from "../../services/CategoryService.js";
+import Spinner from "../../components/spinner/Spinner.jsx";
+import ProductItems from "../../components/productItems/ProductItems.jsx";
 
 function CategoryProducts() {
+  const [item, setItem] = useState({});
+  const { idcategory } = useParams();
+  const [loading, startTransition] = useTransition();
+  const navigate = useNavigate();
+
+  const getAllProductsToByCategoryId = useCallback(() => {
+    startTransition(async () => {
+      try {
+        await wait();
+        const { data } = await categoryService.getProductByCategoryId(
+          idcategory
+        );
+        setItem(data);
+      } catch (error) {
+        navigate("/error/not-found");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    getAllProductsToByCategoryId();
+  }, []);
+
   return (
     <>
       <div className="breadcrumbs text-lg">
@@ -12,22 +39,19 @@ function CategoryProducts() {
           <li>
             <Link to={"/category"}>Catégorie</Link>
           </li>
-          <li>Nom du catégorie</li>
+          <li>{item.name}</li>
         </ul>
       </div>
       <div className="my-5">
         <h1 className="font-semibold text-xl">
           Liste des produits pour une catégorie spécifique
         </h1>
-        <p className="mt-3 text-gray-500">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam excepturi
-          iure dicta provident exercitationem quaerat fuga autem, laborum magni,
-          possimus ex voluptates reprehenderit amet, tenetur rerum quo
-          consequatur perferendis blanditiis?
-        </p>
       </div>
       <div className="flex justify-between items-center">
-        <div className="text-gray-500">Il y a 25 produits</div>
+        <div className="text-gray-500">
+          Il y a {item.products !== undefined ? item.products.length : "0"}
+          &nbsp;produit(s)
+        </div>
         <div className="flex items-center gap-3">
           <span className="w-full text-gray-600">Trier par :</span>
           <select className="select min-w-72">
@@ -39,18 +63,25 @@ function CategoryProducts() {
           </select>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-4 my-10">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-      </div>
+
+      {!loading && item.products !== undefined ? (
+        <>
+          {item.products.length !== 0 ? (
+            <div className="grid grid-cols-4 gap-4 my-10">
+              <ProductItems products={item.products} />
+            </div>
+          ) : (
+            <div className="my-20">
+              <h1 className="text-center font-semibold text-2xl">
+                Cette catégorie n'est associée à aucun produit
+              </h1>
+            </div>
+          )}
+        </>
+      ) : (
+        <Spinner />
+      )}
+
       <div className="flex justify-center items-center">
         <div>
           <div className="pagination">
@@ -85,8 +116,8 @@ function CategoryProducts() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M7.74375 5.2448C7.41875 5.5698 7.41875 6.0948 7.74375 6.4198L10.9771 9.65314L7.74375 12.8865C7.41875 13.2115 7.41875 13.7365 7.74375 14.0615C8.06875 14.3865 8.59375 14.3865 8.91875 14.0615L12.7437 10.2365C13.0687 9.91147 13.0687 9.38647 12.7437 9.06147L8.91875 5.23647C8.60208 4.9198 8.06875 4.9198 7.74375 5.2448Z"
                   fill="#969696"
                 />
