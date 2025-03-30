@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import UserService from "./UserService.js";
-import fastify from "fastify";
 
 class AuthService {
   /**
@@ -18,8 +17,8 @@ class AuthService {
    */
   #salt = 10;
 
-  constructor(connection, fastify) {
-    this.#userService = new UserService(connection);
+  constructor(fastify) {
+    this.#userService = new UserService();
     this.#fastify = fastify;
   }
 
@@ -31,10 +30,9 @@ class AuthService {
     const { email, password } = req;
     try {
       const user = await this.#userService.getByEmail(email);
-      if (!(await this.#verifyPassword(password, user.password))) {
+      if (!(await this.#verifyPassword(password, user.password)))
         throw new Error("Please check your email or password");
-      }
-      return this.#generateToken(user.email, user.username, user.profile_image);
+      return this.#generateToken(email, user.username, user.profile_image);
     } catch (error) {
       throw new Error("Please check your email or password");
     }

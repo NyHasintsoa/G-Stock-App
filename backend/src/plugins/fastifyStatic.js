@@ -10,7 +10,7 @@ import { pathDir } from "../utils/pathConfig.js";
 const fastifyStaticPlugin = async (fastify, options) => {
   fastify.register(fastifyStatic, {
     root: pathDir,
-    prefix: "/public"
+    prefix: "/uploaded/images"
   });
 };
 

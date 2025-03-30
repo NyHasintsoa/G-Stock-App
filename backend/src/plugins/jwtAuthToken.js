@@ -1,6 +1,6 @@
 import fastifyJwt from "@fastify/jwt";
 import fastifyPlugin from "fastify-plugin";
-import { matchSecuredUrl, transformToRegex } from "../utils/matchUrl.js";
+import { transformToRegex } from "../utils/matchUrl.js";
 
 /**
  * Encapsulates the routes

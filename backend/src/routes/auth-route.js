@@ -1,7 +1,5 @@
 import { authSchema } from "../schemas/authSchema.js";
-import AuthService from "../services/authService.js";
-import GithubOAuthService from "../services/githubOAuthService.js";
-import GoogleOAuthService from "../services/googleOAuthService.js";
+import AuthService from "../services/AuthService.js";
 
 /**
  * Encapsulates the routes
@@ -9,8 +7,7 @@ import GoogleOAuthService from "../services/googleOAuthService.js";
  * @param {Object} options plugin options
  */
 const authRoutes = async (fastify, options) => {
-  const googleOAuthService = new GoogleOAuthService();
-  const githubOAuthService = new GithubOAuthService();
+  const authService = new AuthService(fastify);
 
   fastify.get("/api/auth/send", (req, reply) => {
     const { mailer } = fastify;
@@ -31,7 +28,7 @@ const authRoutes = async (fastify, options) => {
     { schema: authSchema },
     async (req, reply) => {
       try {
-        const response = await service.signIn(req.body);
+        const response = await authService.signIn(req.body);
         reply.status(200).send(response);
       } catch (error) {
         reply.status(403).send(error);
@@ -44,7 +41,7 @@ const authRoutes = async (fastify, options) => {
     { schema: authSchema },
     async (req, reply) => {
       try {
-        const r = await service.signUp(req.body);
+        await authService.signUp(req.body);
         reply.status(200).send({
           message: "User added successfully"
         });

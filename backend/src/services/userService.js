@@ -10,7 +10,13 @@ class UserService extends ParentService {
    * @param {string} email User's email
    * @return {Object}
    */
-  async getByEmail(email) {}
+  async getByEmail(email) {
+    const result = await this._model.findOne({
+      where: { email: email }
+    });
+    if (result == null) throw new Error("User Not Found");
+    return result;
+  }
 
   /**
    * Get User By username if it's exist
@@ -23,7 +29,14 @@ class UserService extends ParentService {
    * Add User Local to database
    * @param {Object} userInfo User's Informations
    */
-  async addUser(userInfo) {}
+  async addUser(userInfo) {
+    await this._model.create({
+      id: generateId(userInfo.email),
+      ...userInfo,
+      provider: "local",
+      roles: "ROLE_USER"
+    });
+  }
 
   /**
    * Add User to database

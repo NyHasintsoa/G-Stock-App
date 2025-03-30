@@ -118,9 +118,8 @@ class ProductService extends ParentService {
   /**
    * Upload Product Image To the disk
    * @param {import("fastify").FastifyRequest} req Request from client
-   * @param {string} productId Product Id
    */
-  async uploadImage(req, productId) {}
+  async uploadImage(req) {}
 }
 
 export default ProductService;

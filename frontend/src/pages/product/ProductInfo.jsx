@@ -50,6 +50,9 @@ function ProductInfo() {
             <Link to={"/"}>Accueil</Link>
           </li>
           <li>
+            <Link to={"/category"}>Categorie</Link>
+          </li>
+          <li>
             <Link to={"/product"}>Produits</Link>
           </li>
           <li>{item.name}</li>
