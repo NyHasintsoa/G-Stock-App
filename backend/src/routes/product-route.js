@@ -17,10 +17,22 @@ const productRoutes = async (fastify, options) => {
     });
   });
 
+  fastify.get("/api/products/paged", async (req, reply) => {
+    try {
+      reply.status(200).send({
+        message: "Get All Suppliers",
+        data: await productService.getAndCountAll(req)
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
   fastify.get("/api/products/:id", async (req, reply) => {
     try {
       reply.status(200).send({
-        message: "Get Product By Id"
+        message: "Get Product By Id",
+        data: await productService.getById(req.params.id)
       });
     } catch (error) {
       reply.status(404).send(error);

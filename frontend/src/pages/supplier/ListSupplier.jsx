@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import supplierService from "../../services/SupplierService.js";
 import SupplierItems from "./SupplierItems.jsx";
 import Spinner from "../../components/spinner/Spinner.jsx";
-import usePagination from "../../hooks/usePagination.jsx";
+import usePagination from "../../hooks/usePagination.js";
 import Pagination from "../../components/pagination/Pagination.jsx";
 
 function ListSupplier() {

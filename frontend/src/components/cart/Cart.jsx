@@ -10,7 +10,7 @@ function Cart() {
         <div className="drawer-content pt-10 flex flex-col h-full">
           <label
             htmlFor="user-cart-list"
-            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 hover:text-red-600"
           >
             ✕
           </label>

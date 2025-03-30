@@ -1,33 +1,15 @@
 import { Link, useNavigate, useParams } from "react-router";
-import { useCallback, useEffect, useState, useTransition } from "react";
-import { wait } from "../../utils/api.js";
 import categoryService from "../../services/CategoryService.js";
 import Spinner from "../../components/spinner/Spinner.jsx";
 import ProductItems from "../../components/productItems/ProductItems.jsx";
+import useFetchItem from "../../hooks/useFetchItem.js";
 
 function CategoryProducts() {
-  const [item, setItem] = useState({});
   const { idcategory } = useParams();
-  const [loading, startTransition] = useTransition();
-  const navigate = useNavigate();
-
-  const getAllProductsToByCategoryId = useCallback(() => {
-    startTransition(async () => {
-      try {
-        await wait();
-        const { data } = await categoryService.getProductByCategoryId(
-          idcategory
-        );
-        setItem(data);
-      } catch (error) {
-        navigate("/error/not-found");
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    getAllProductsToByCategoryId();
-  }, []);
+  const { item, loading } = useFetchItem(
+    categoryService.getProductByCategoryId.bind(categoryService),
+    idcategory
+  );
 
   return (
     <>

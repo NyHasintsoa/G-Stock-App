@@ -1,34 +1,15 @@
-import { Link, useNavigate, useParams } from "react-router";
-import ProductCard from "../../components/productCard/ProductCard.jsx";
+import { Link, useParams } from "react-router";
 import supplierService from "../../services/SupplierService.js";
-import { useCallback, useEffect, useState, useTransition } from "react";
 import Spinner from "../../components/spinner/Spinner.jsx";
 import ProductItems from "../../components/productItems/ProductItems.jsx";
-import { wait } from "../../utils/api.js";
+import useFetchItem from "../../hooks/useFetchItem.js";
 
 function SupplierProducts() {
-  const [item, setItem] = useState({});
   const { idSupplier } = useParams();
-  const [loading, startTransition] = useTransition();
-  const navigate = useNavigate();
-
-  const getAllProductsToBySupplierId = useCallback(() => {
-    startTransition(async () => {
-      try {
-        await wait();
-        const { data } = await supplierService.getProductBySupplierId(
-          idSupplier
-        );
-        setItem(data);
-      } catch (error) {
-        navigate("/error/not-found");
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    getAllProductsToBySupplierId();
-  }, []);
+  const { item, loading } = useFetchItem(
+    supplierService.getProductBySupplierId.bind(supplierService),
+    idSupplier
+  );
 
   return (
     <>
@@ -47,12 +28,7 @@ function SupplierProducts() {
         <h1 className="font-semibold text-xl">
           Liste des produits du fournisseur Test Fournisseur
         </h1>
-        <p className="mt-3 text-gray-500">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam excepturi
-          iure dicta provident exercitationem quaerat fuga autem, laborum magni,
-          possimus ex voluptates reprehenderit amet, tenetur rerum quo
-          consequatur perferendis blanditiis?
-        </p>
+        <p className="mt-3 text-gray-500">{item.description}</p>
       </div>
       <div className="flex justify-between items-center">
         <div className="text-gray-500">Il y a 25 produits</div>

@@ -14,13 +14,53 @@ class ProductService extends ParentService {
 
   #categoryService;
 
+  #productOption = {
+    attributes: {
+      exclude: ["supplierId", "typesProductId"]
+    },
+    include: [
+      {
+        model: CategoryModel,
+        attributes: {
+          exclude: ["products_categories"]
+        }
+      },
+      { model: SupplierModel },
+      { model: TypeModel }
+    ]
+  };
+
   constructor() {
     super();
     this.#categoryService = new CategoryService();
   }
 
   async getAll() {
-    return await this._model.findAll({
+    return await this._model.findAll(this.#productOption);
+  }
+
+  /**
+   * Get Product By Id
+   * @param {string} id Product Id
+   */
+  async getById(id) {
+    const product = await this._model.findByPk(id, this.#productOption);
+    if (product === null) throw new Error("Product Not Found");
+    return product;
+  }
+
+  /**
+   * Get Paged Product
+   * @param {import("fastify").FastifyRequest} req Reqeust from fastify
+   * @return {Object}
+   */
+  async getAndCountAll(req) {
+    let { page, size } = req.query;
+    page = !isNaN(page) ? page : 1;
+    this._rowLimit = !isNaN(size) ? parseInt(size) : 10;
+    const { count, rows } = await this._model.findAndCountAll({
+      limit: this._rowLimit,
+      offset: (parseInt(page) - 1) * this._rowLimit,
       attributes: {
         exclude: ["supplierId", "typesProductId"]
       },
@@ -35,6 +75,15 @@ class ProductService extends ParentService {
         { model: TypeModel }
       ]
     });
+    return {
+      rows,
+      page: {
+        size: this._rowLimit,
+        currentPage: parseInt(page),
+        totalElements: count,
+        totalPages: Math.ceil(count / this._rowLimit)
+      }
+    };
   }
 
   /**
