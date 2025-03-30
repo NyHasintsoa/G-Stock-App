@@ -1,6 +1,5 @@
 import productSchema from "../schemas/productSchema.js";
 import ProductService from "../services/ProductService.js";
-import { getUploadedFile } from "../utils/pathConfig.js";
 
 /**
  * Encapsulates the routes
@@ -55,6 +54,17 @@ const productRoutes = async (fastify, options) => {
     }
   );
 
+  fastify.post("/api/products/upload/:id", async (req, reply) => {
+    try {
+      await productService.uploadImage(req);
+      reply.status(200).send({
+        message: "Product Image uploaded successfully"
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
   fastify.put(
     "/api/products/:id",
     { schema: productSchema },
@@ -70,17 +80,6 @@ const productRoutes = async (fastify, options) => {
       }
     }
   );
-
-  fastify.put("/api/products/upload/:id", async (req, reply) => {
-    try {
-      await productService.uploadImage(req);
-      reply.status(200).send({
-        message: "Product Image uploaded successfully"
-      });
-    } catch (error) {
-      reply.status(500).send(error);
-    }
-  });
 };
 
 export default productRoutes;

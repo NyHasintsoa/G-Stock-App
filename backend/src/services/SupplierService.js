@@ -14,7 +14,7 @@ class SupplierService extends ParentService {
         }
       ]
     });
-    if (supplier == null) throw new Error("Supplier Not found");
+    if (!supplier) throw new Error("Supplier Not found");
     return supplier;
   }
 

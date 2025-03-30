@@ -14,7 +14,7 @@ class TypeService extends ParentService {
         }
       ]
     });
-    if (typeProduct == null) throw new Error("Type product Not Found");
+    if (!typeProduct) throw new Error("Type product Not Found");
     return typeProduct;
   }
 

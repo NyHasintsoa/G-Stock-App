@@ -47,7 +47,7 @@ class ParentService {
    */
   async getById(id) {
     const result = await this._model.findByPk(id);
-    if (result === null) throw new Error("Not Found");
+    if (!result) throw new Error("Not Found");
     return result;
   }
 }

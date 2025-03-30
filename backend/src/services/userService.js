@@ -14,7 +14,7 @@ class UserService extends ParentService {
     const result = await this._model.findOne({
       where: { email: email }
     });
-    if (result == null) throw new Error("User Not Found");
+    if (!result) throw new Error("User Not Found");
     return result;
   }
 

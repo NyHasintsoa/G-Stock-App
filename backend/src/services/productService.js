@@ -45,7 +45,7 @@ class ProductService extends ParentService {
    */
   async getById(id) {
     const product = await this._model.findByPk(id, this.#productOption);
-    if (product === null) throw new Error("Product Not Found");
+    if (!product) throw new Error("Product Not Found");
     return product;
   }
 
@@ -119,7 +119,29 @@ class ProductService extends ParentService {
    * Upload Product Image To the disk
    * @param {import("fastify").FastifyRequest} req Request from client
    */
-  async uploadImage(req) {}
+  async uploadImage(req) {
+    const { id } = req.params;
+    const product = this._model.findByPk(id);
+    if (!product) throw new Error("Product not Found");
+    const { path_img } = product;
+    if (path_img) {
+      const [folder, file] = path_img.split("/");
+      await deleteUploadedFile("products", folder, file);
+    }
+    const { file, filename } = await req.file();
+    const { path, time } = await uploadPath("products", filename);
+    await pipeline(file, fs.createWriteStream(path));
+    await this._model.update(
+      {
+        path_img: `${time}/${filename}`
+      },
+      {
+        where: {
+          id
+        }
+      }
+    );
+  }
 }
 
 export default ProductService;
