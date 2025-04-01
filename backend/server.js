@@ -1,20 +1,23 @@
 import Fastify from "fastify";
 import fastifyMultipart from "@fastify/multipart";
-import cors from "@fastify/cors";
 import fastifyEnv from "@fastify/env";
 import dotenv from "dotenv";
+import jwtAuthToken from "./src/plugins/jwtAuthToken.js";
+import fastifyMailer from "./src/plugins/fastifyMailer.js";
+import fastifyStatic from "./src/plugins/fastifyStatic.js";
+import fastifyCookie from "./src/plugins/fastifyCookie.js";
+import fastifyCors from "./src/plugins/fastifyCors.js";
+import fastifyView from "./src/plugins/fastifyView.js";
 import swaggerDocs from "./src/docs/swaggerDocs.js";
 import productRoutes from "./src/routes/product-route.js";
 import dashboardRoutes from "./src/routes/dashboard-route.js";
 import categoryRoutes from "./src/routes/category-route.js";
 import testRoutes from "./src/routes/test-route.js";
-import mailer from "./src/plugins/mailer.js";
 import authRoutes from "./src/routes/auth-route.js";
 import userRoutes from "./src/routes/user-route.js";
-import jwtAuthToken from "./src/plugins/jwtAuthToken.js";
 import typeRoutes from "./src/routes/type-route.js";
 import supplierRoutes from "./src/routes/supplier-route.js";
-import fastifyStatic from "./src/plugins/fastifyStatic.js";
+import homeRoutes from "./src/routes/home-route.js";
 import "./src/models/Migration.js";
 
 dotenv.config();
@@ -33,12 +36,12 @@ fastify.register(fastifyEnv, {
 /**
  * Fastify Plugin
  */
+fastify.register(fastifyView);
 fastify.register(fastifyStatic);
-fastify.register(mailer);
+fastify.register(fastifyCookie);
+fastify.register(fastifyMailer);
 fastify.register(swaggerDocs);
-fastify.register(cors, {
-  origin: [process.env.FRONTEND_URL]
-});
+fastify.register(fastifyCors);
 fastify.register(fastifyMultipart, {
   limits: 1048576
 });
@@ -55,6 +58,7 @@ fastify.register(typeRoutes);
 fastify.register(dashboardRoutes);
 fastify.register(testRoutes);
 fastify.register(supplierRoutes);
+fastify.register(homeRoutes);
 
 /**
  * Fastify Server Configuration

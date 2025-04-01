@@ -6,14 +6,16 @@ import AdminLayout from "./AdminLayout.jsx";
 import Loader from "../components/loader/Loader.jsx";
 import Dashboard from "../pages/dashboard/Dashboard.jsx";
 import Layout from "./Layout.jsx";
-import Signin from "../pages/auth/Signin.jsx";
 import SignUp from "../pages/auth/SignUp.jsx";
+import Signin from "../pages/auth/SignIn.jsx";
 import SupplierProducts from "../pages/supplier/SupplierProducts.jsx";
 import ListSupplier from "../pages/supplier/ListSupplier.jsx";
 import ListCategory from "../pages/category/ListCategory.jsx";
 import CategoryProducts from "../pages/category/CategoryProducts.jsx";
 import ProductInfo from "../pages/product/ProductInfo.jsx";
 import NotFoundError from "../pages/error/NotFoundError.jsx";
+import RecoverAccount from "../pages/auth/RecoverAccount.jsx";
+import UserProfile from "../pages/user/UserProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Home />
+          },
+          {
+            path: "/user/profile",
+            element: <UserProfile />
           },
           {
             path: "/supplier",
@@ -63,6 +69,10 @@ const router = createBrowserRouter([
           {
             path: "/auth/signup",
             element: <SignUp />
+          },
+          {
+            path: "/auth/recovery-account",
+            element: <RecoverAccount />
           }
         ]
       }

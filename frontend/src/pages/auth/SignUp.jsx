@@ -1,14 +1,30 @@
 import { Link } from "react-router";
-import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
+import { wait } from "../../utils/api.js";
+import InputForm from "../../components/inputForm/InputForm.jsx";
+import SubmitBtn from "../../components/submitBtn/SubmitBtn.jsx";
 
 function SignUp() {
-  const handleButton = () => {
-    toast.success("Button Clicked");
+  const { register, handleSubmit, formState } = useForm();
+
+  const onSubmit = async (data) => {
+    await wait();
+    console.log(
+      "\n###########################################\n",
+      data,
+      "\n###########################################\n"
+    );
   };
+
+  const { errors, isSubmitting } = formState;
+
   return (
     <>
       <div className="min-h-screen flex justify-center items-center">
-        <form className="bg-white mx-auto flex w-full max-w-md flex-col rounded-xl border border-border p-2 sm:p-10">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white mx-auto flex w-full max-w-md flex-col rounded-xl border border-border p-2 sm:p-10"
+        >
           <div className="flex w-full flex-col gap-2">
             <div className="text-center">
               <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
@@ -81,50 +97,31 @@ function SignUp() {
           <div className="divider my-6 text-xs text-content2">or</div>
 
           <div className="form-group">
-            <div className="form-field">
-              <label className="form-label">Email address</label>
-              <input
-                placeholder="Type here"
-                type="email"
-                className="input max-w-full focus:border-blue-500 focus:ring-blue-500"
-              />
-              <label className="form-label">
-                <span className="form-label-alt text-red-600">
-                  Please enter a valid email.
-                </span>
-              </label>
-            </div>
-            <div className="form-field">
-              <label className="form-label">Confirm Password</label>
-              <input
-                placeholder="Type here"
-                type="password"
-                className="input max-w-full border-red-600"
-              />
-              <label className="form-label">
-                <span className="form-label-alt text-red-600">
-                  Please enter a password
-                </span>
-              </label>
-            </div>
-            <div className="form-field">
-              <label className="form-label">Password</label>
-              <input
-                placeholder="Type here"
-                type="password"
-                className="input max-w-full border-red-600"
-              />
-              <label className="form-label">
-                <span className="form-label-alt text-red-600">
-                  Please enter a password
-                </span>
-              </label>
-            </div>
+            <InputForm
+              register={register}
+              value={"admin@domain.com"}
+              options={FormFields.email}
+              errorField={errors.email}
+            />
+            <InputForm
+              register={register}
+              value={"Admin@123"}
+              options={FormFields.password}
+              errorField={errors.password}
+            />
+            <InputForm
+              register={register}
+              value={"Admin@123"}
+              options={FormFields.confirmPassword}
+              errorField={errors.confirmPassword}
+            />
             <div className="form-field pt-3">
               <div className="form-control justify-between">
-                <button type="button" className="btn btn-primary w-full">
-                  Sign in
-                </button>
+                <SubmitBtn
+                  text={"Sign up"}
+                  isSubmitting={isSubmitting}
+                  className={"btn btn-primary w-full"}
+                />
               </div>
             </div>
           </div>
@@ -133,5 +130,48 @@ function SignUp() {
     </>
   );
 }
+
+const FormFields = {
+  email: {
+    name: "email",
+    type: "email",
+    label: "Email",
+    rules: {
+      required: "Veuillez entrer votre adresse mail",
+      pattern: {
+        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        message: "Adresse e-mail invalide"
+      },
+      minLength: {
+        value: 3,
+        message: "Ce champ doit comporter au moins 3 caractères"
+      }
+    }
+  },
+  password: {
+    name: "password",
+    type: "password",
+    label: "Mot de passe",
+    rules: {
+      required: "Veuillez entrer votre mot de passe",
+      minLength: {
+        value: 3,
+        message: "Ce champ doit comporter au moins 3 caractères"
+      }
+    }
+  },
+  confirmPassword: {
+    name: "password",
+    type: "password",
+    label: "Confirmation mot de passe",
+    rules: {
+      required: "Veuillez entrer votre mot de passe",
+      minLength: {
+        value: 3,
+        message: "Ce champ doit comporter au moins 3 caractères"
+      }
+    }
+  }
+};
 
 export default SignUp;

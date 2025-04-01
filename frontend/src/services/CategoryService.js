@@ -1,3 +1,4 @@
+import { ApiError } from "../utils/api.js";
 import ParentService from "./ParentService.js";
 
 class CategoryService extends ParentService {
@@ -12,7 +13,7 @@ class CategoryService extends ParentService {
    */
   async getProductByCategoryId(id) {
     const r = await fetch(
-      `${this._backendUrl}${this._requestPrefix}/${id}/products`,
+      `${this._backendUrl + this._requestPrefix}/${id}/products`,
       {
         method: "GET",
         headers: {
@@ -21,7 +22,7 @@ class CategoryService extends ParentService {
       }
     );
     if (r.ok) return r.json();
-    throw new Error("Error");
+    throw new ApiError(r.status, await r.json());
   }
 }
 

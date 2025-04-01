@@ -1,10 +1,28 @@
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import InputForm from "../../components/inputForm/InputForm.jsx";
+import { wait } from "../../utils/api.js";
+import SubmitBtn from "../../components/submitBtn/SubmitBtn.jsx";
+import useAuth from "../../hooks/useAuth.js";
 
 function Signin() {
+  const { login } = useAuth();
+  const { register, handleSubmit, formState } = useForm();
+
+  const onSubmit = async (data) => {
+    await wait();
+    login(data);
+  };
+
+  const { errors, isSubmitting } = formState;
+
   return (
     <>
       <div className="min-h-screen flex justify-center items-center">
-        <form className="bg-white mx-auto flex w-full max-w-md flex-col rounded-xl border border-border p-2 sm:p-10">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white mx-auto flex w-full max-w-md flex-col rounded-xl border border-border p-2 sm:p-10"
+        >
           <div className="flex w-full flex-col gap-2">
             <div className="text-center">
               <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
@@ -74,39 +92,28 @@ function Signin() {
               </button>
             </div>
           </div>
-          <div className="divider my-6 text-xs text-content2">or</div>
+          <div className="divider divider-horizontal my-6 text-xs text-content2 uppercase">
+            or
+          </div>
 
           <div className="form-group">
-            <div className="form-field">
-              <label className="form-label">Email address</label>
-              <input
-                placeholder="Type here"
-                type="email"
-                className="input max-w-full focus:border-blue-500 focus:ring-blue-500"
-              />
-              <label className="form-label">
-                <span className="form-label-alt text-red-600">
-                  Please enter a valid email.
-                </span>
-              </label>
-            </div>
-            <div className="form-field">
-              <label className="form-label">Password</label>
-              <input
-                placeholder="Type here"
-                type="password"
-                className="input max-w-full border-red-600"
-              />
-              <label className="form-label">
-                <span className="form-label-alt text-red-600">
-                  Please enter a password
-                </span>
-              </label>
-            </div>
+            <InputForm
+              register={register}
+              value={"admin@domain.com"}
+              options={FormFields.email}
+              errorField={errors.email}
+            />
+            <InputForm
+              register={register}
+              value={"Admin@123"}
+              options={FormFields.password}
+              errorField={errors.password}
+            />
             <div className="form-field">
               <div className="form-control justify-between">
                 <div className="flex gap-2">
                   <input
+                    {...register("rememberMe")}
                     type="checkbox"
                     id="remember-checkbox"
                     className="checkbox"
@@ -114,17 +121,22 @@ function Signin() {
                   <label htmlFor="remember-checkbox">Remember me</label>
                 </div>
                 <label className="form-label">
-                  <a className="link link-underline-hover link-primary text-sm">
+                  <Link
+                    to={"/auth/recovery-account"}
+                    className="link link-underline-hover link-primary text-sm"
+                  >
                     Forgot your password?
-                  </a>
+                  </Link>
                 </label>
               </div>
             </div>
             <div className="form-field pt-3">
               <div className="form-control justify-between">
-                <button type="button" className="btn btn-primary w-full">
-                  Sign in
-                </button>
+                <SubmitBtn
+                  text={"Sign in"}
+                  isSubmitting={isSubmitting}
+                  className={"btn btn-primary w-full"}
+                />
               </div>
             </div>
           </div>
@@ -133,5 +145,36 @@ function Signin() {
     </>
   );
 }
+
+const FormFields = {
+  email: {
+    name: "email",
+    type: "email",
+    label: "Email",
+    rules: {
+      required: "Veuillez entrer votre adresse mail",
+      pattern: {
+        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        message: "Adresse e-mail invalide"
+      },
+      minLength: {
+        value: 3,
+        message: "Ce champ doit comporter au moins 3 caractères"
+      }
+    }
+  },
+  password: {
+    name: "password",
+    type: "password",
+    label: "Mot de passe",
+    rules: {
+      required: "Veuillez entrer votre mot de passe",
+      minLength: {
+        value: 3,
+        message: "Ce champ doit comporter au moins 3 caractères"
+      }
+    }
+  }
+};
 
 export default Signin;

@@ -1,9 +1,18 @@
 import { Link } from "react-router";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import avatarImg from "../../assets/unknown.jpg";
+import { FaPowerOff } from "react-icons/fa6";
+import useAuth, { AuthStatus } from "../../hooks/useAuth.js";
 
 function NavbarEnd() {
-  const isConnected = false;
+  const { status, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const isConnected = status === AuthStatus.Authenticated;
+
   return (
     <>
       <div className="navbar-end">
@@ -25,10 +34,25 @@ function NavbarEnd() {
                   <img src={avatarImg} alt="avatar" />
                 </label>
                 <div className="dropdown-menu dropdown-menu-bottom-left">
-                  <a className="dropdown-item text-sm">Profile</a>
-                  <a className="dropdown-item text-sm">Account settings</a>
-                  <a className="dropdown-item text-sm">Subscriptions</a>
-                  <a className="dropdown-item text-sm">Log out</a>
+                  <Link to={"/user/profile"} className="dropdown-item text-sm">
+                    Profile
+                  </Link>
+                  <Link to={"/"} className="dropdown-item text-sm">
+                    Account settings
+                  </Link>
+                  <Link to={"/"} className="dropdown-item text-sm">
+                    Subscriptions
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    type="button"
+                    className="dropdown-item hover:bg-red-600 hover:text-white text-sm"
+                  >
+                    <span className="flex items-center gap-x-3">
+                      <FaPowerOff />
+                      Log out
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -36,10 +60,10 @@ function NavbarEnd() {
         ) : (
           <>
             <Link to={"/auth/signin"} className="navbar-item">
-              Sign Up
+              Sign In
             </Link>
             <Link to={"/auth/signup"} className="navbar-item">
-              Sign In
+              Sign Up
             </Link>
           </>
         )}

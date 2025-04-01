@@ -2,10 +2,21 @@ import path, { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import fs from "node:fs/promises";
 import mime from "mime-types";
+import ejs from "ejs";
 
-const pathDir = path.join(
+const uploadDir = path.join(
   dirname(dirname(dirname(fileURLToPath(import.meta.url)))),
   "uploads"
+);
+
+const publicDir = path.join(
+  dirname(dirname(dirname(fileURLToPath(import.meta.url)))),
+  "public"
+);
+
+const templateDir = path.join(
+  dirname(dirname(fileURLToPath(import.meta.url))),
+  "templates"
 );
 
 /**
@@ -16,7 +27,7 @@ const pathDir = path.join(
  */
 const uploadPath = async (folder, filename) => {
   let uploadTime = new Date().getTime().toString();
-  const uploadDir = path.join(pathDir, folder, uploadTime);
+  const uploadDir = path.join(uploadDir, folder, uploadTime);
   await fs.mkdir(uploadDir);
   return {
     path: path.join(uploadDir, filename),
@@ -32,7 +43,7 @@ const uploadPath = async (folder, filename) => {
  * @return {Object}
  */
 const getUploadedFile = async (parentFolder, folder, filename) => {
-  const filePath = path.join(pathDir, parentFolder, folder, filename);
+  const filePath = path.join(uploadDir, parentFolder, folder, filename);
   const file = await fs.readFile(filePath);
   const contentType = mime.lookup(filename);
   return { contentType, file };
@@ -44,7 +55,7 @@ const getUploadedFile = async (parentFolder, folder, filename) => {
  * @param {string} filename
  */
 const deleteUploadedFile = async (parentFolder, folder, filename) => {
-  const filePath = path.join(pathDir, parentFolder, folder, filename);
+  const filePath = path.join(uploadDir, parentFolder, folder, filename);
   await fs.unlink(filePath);
   const parentFile = path.dirname(filePath);
   if ((await fs.readdir(parentFile)).length === 0) {
@@ -52,4 +63,26 @@ const deleteUploadedFile = async (parentFolder, folder, filename) => {
   }
 };
 
-export { uploadPath, getUploadedFile, deleteUploadedFile, pathDir };
+/**
+ * Generate Html to String with ejs
+ * @param {string} templatePath Path to the template
+ * @param {Object} data Data into the template
+ */
+const renderTemplate = (templatePath, data) => {
+  return new Promise((resolve, reject) => {
+    ejs.renderFile(templatePath, data, (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+
+export {
+  uploadPath,
+  getUploadedFile,
+  deleteUploadedFile,
+  uploadDir,
+  templateDir,
+  publicDir,
+  renderTemplate
+};

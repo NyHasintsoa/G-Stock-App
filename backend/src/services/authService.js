@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
+import path from "node:path";
 import UserService from "./UserService.js";
+import { renderTemplate, templateDir } from "../utils/pathConfig.js";
 
 class AuthService {
   /**
@@ -46,16 +48,11 @@ class AuthService {
    * @return {Object}
    */
   #generateToken(email, username, profile_image) {
-    const token = this.#fastify.jwt.sign(
-      {
-        email: email,
-        username: username,
-        profile_image: profile_image
-      },
-      {
-        expiresIn: process.env.JWT_EXPIRATION || "1d"
-      }
-    );
+    const token = this.#fastify.jwt.sign({
+      email: email,
+      username: username,
+      profile_image: profile_image
+    });
     return {
       token,
       userInfo: {
@@ -89,6 +86,27 @@ class AuthService {
     const { email, username, profile_image } =
       await this.#userService.checkUserFromGoogle(user);
     return this.#generateToken(email, username, profile_image);
+  }
+
+  /**
+   * Send Mail to recovery account by email
+   * @param {Object} req Request Body
+   */
+  async sendMailAccountRecovery(req) {
+    const { email } = req;
+    const token = this.#fastify.jwt.sign({
+      email
+    });
+    const FRONTEND_URL = process.env.FRONTEND_URL;
+    const html = await renderTemplate(
+      path.join(templateDir, "emails", "recovery-account.ejs"),
+      { email, token, FRONTEND_URL }
+    );
+    await this.#fastify.mailer.sendMail({
+      to: email,
+      subject: "Account Recovery",
+      html
+    });
   }
 }
 

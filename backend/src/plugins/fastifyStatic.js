@@ -1,6 +1,6 @@
 import fastifyStatic from "@fastify/static";
 import fastifyPlugin from "fastify-plugin";
-import { pathDir } from "../utils/pathConfig.js";
+import { publicDir, uploadDir } from "../utils/pathConfig.js";
 
 /**
  * Encapsulates the routes
@@ -9,7 +9,7 @@ import { pathDir } from "../utils/pathConfig.js";
  */
 const fastifyStaticPlugin = async (fastify, options) => {
   fastify.register(fastifyStatic, {
-    root: pathDir,
+    root: [uploadDir, publicDir],
     prefix: "/uploaded/images"
   });
 };
