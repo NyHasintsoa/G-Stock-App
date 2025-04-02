@@ -6,6 +6,7 @@ function ErrorPage() {
     <>
       <h1>Error</h1>
       <p>{error.status}</p>
+      <p>{error.message}</p>
       <p>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut pariatur
         doloribus consequatur ullam, autem facilis. Quo doloremque accusantium,

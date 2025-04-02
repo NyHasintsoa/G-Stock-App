@@ -10,11 +10,12 @@ import TypeModel from "../models/TypeModel.js";
 import CategoryService from "./CategoryService.js";
 
 class ProductService extends ParentService {
-  _model = ProductModel;
+  _model;
 
   #categoryService;
 
-  #productOption = {
+  /** @type {import("sequelize").FindOptions} */
+  _findOptions = {
     attributes: {
       exclude: ["supplierId", "typesProductId"]
     },
@@ -32,58 +33,8 @@ class ProductService extends ParentService {
 
   constructor() {
     super();
+    this._model = ProductModel;
     this.#categoryService = new CategoryService();
-  }
-
-  async getAll() {
-    return await this._model.findAll(this.#productOption);
-  }
-
-  /**
-   * Get Product By Id
-   * @param {string} id Product Id
-   */
-  async getById(id) {
-    const product = await this._model.findByPk(id, this.#productOption);
-    if (!product) throw new Error("Product Not Found");
-    return product;
-  }
-
-  /**
-   * Get Paged Product
-   * @param {import("fastify").FastifyRequest} req Reqeust from fastify
-   * @return {Object}
-   */
-  async getAndCountAll(req) {
-    let { page, size } = req.query;
-    page = !isNaN(page) ? page : 1;
-    this._rowLimit = !isNaN(size) ? parseInt(size) : 10;
-    const { count, rows } = await this._model.findAndCountAll({
-      limit: this._rowLimit,
-      offset: (parseInt(page) - 1) * this._rowLimit,
-      attributes: {
-        exclude: ["supplierId", "typesProductId"]
-      },
-      include: [
-        {
-          model: CategoryModel,
-          attributes: {
-            exclude: ["products_categories"]
-          }
-        },
-        { model: SupplierModel },
-        { model: TypeModel }
-      ]
-    });
-    return {
-      rows,
-      page: {
-        size: this._rowLimit,
-        currentPage: parseInt(page),
-        totalElements: count,
-        totalPages: Math.ceil(count / this._rowLimit)
-      }
-    };
   }
 
   /**
@@ -101,8 +52,7 @@ class ProductService extends ParentService {
       price: req.price,
       description: req.description,
       supplierId: req.supplierId,
-      typesProductId: req.typesProductId,
-      CategoryModels: categories
+      typesProductId: req.typesProductId
     });
     product.addCategoryModels(categories);
     return product;

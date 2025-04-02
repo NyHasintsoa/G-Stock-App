@@ -4,7 +4,6 @@ import ErrorPage from "../pages/error/ErrorPage.jsx";
 import BaseLayout from "./BaseLayout.jsx";
 import AdminLayout from "./AdminLayout.jsx";
 import Loader from "../components/loader/Loader.jsx";
-import Dashboard from "../pages/dashboard/Dashboard.jsx";
 import Layout from "./Layout.jsx";
 import SignUp from "../pages/auth/SignUp.jsx";
 import Signin from "../pages/auth/SignIn.jsx";
@@ -16,6 +15,7 @@ import ProductInfo from "../pages/product/ProductInfo.jsx";
 import NotFoundError from "../pages/error/NotFoundError.jsx";
 import RecoverAccount from "../pages/auth/RecoverAccount.jsx";
 import UserProfile from "../pages/user/UserProfile.jsx";
+import Dashboard from "../pages/admin/dashboard/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {

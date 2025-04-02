@@ -1,6 +1,14 @@
+import { Link } from "react-router";
+import { FaAngleDown, FaPowerOff, FaRegUser, FaUser } from "react-icons/fa6";
 import avatarImg from "../../assets/unknown.jpg";
+import useAccount from "../../hooks/useAccount.js";
+import IconGear from "../icons/IconGear.jsx";
+import useAuth from "../../hooks/useAuth.js";
 
 function Sidebar() {
+  const { account } = useAccount();
+  const { logout } = useAuth();
+
   return (
     <>
       <div className="sm:w-full sm:max-w-[18rem]">
@@ -43,61 +51,8 @@ function Sidebar() {
                 <span className="menu-title">Main menu</span>
                 <ul className="menu-items">
                   <li className="menu-item">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 opacity-75"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
+                    <IconGear />
                     <span>General</span>
-                  </li>
-
-                  <li className="menu-item menu-active">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 opacity-75"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                    <span>Teams</span>
-                  </li>
-                  <li className="menu-item">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 opacity-75"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                      />
-                    </svg>
-                    <span>Billing</span>
                   </li>
                   <li>
                     <input
@@ -110,39 +65,13 @@ function Sidebar() {
                       htmlFor="menu-1"
                     >
                       <div className="flex gap-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 opacity-75"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                          />
-                        </svg>
+                        <FaRegUser size={17} />
                         <span>Account</span>
                       </div>
-
                       <span className="menu-icon">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <FaAngleDown size={15} />
                       </span>
                     </label>
-
                     <div className="menu-item-collapse">
                       <div className="min-h-0">
                         <label className="menu-item menu-item-disabled ml-6">
@@ -161,72 +90,6 @@ function Sidebar() {
               <section className="menu-section px-4">
                 <span className="menu-title">Settings</span>
                 <ul className="menu-items">
-                  <li className="menu-item">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="opacity-75"
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M3 21l18 0"></path>
-                      <path d="M3 10l18 0"></path>
-                      <path d="M5 6l7 -3l7 3"></path>
-                      <path d="M4 10l0 11"></path>
-                      <path d="M20 10l0 11"></path>
-                      <path d="M8 14l0 3"></path>
-                      <path d="M12 14l0 3"></path>
-                      <path d="M16 14l0 3"></path>
-                    </svg>
-                    Payments
-                  </li>
-                  <li className="menu-item">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="opacity-75"
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path>
-                      <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                      <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2"></path>
-                    </svg>
-                    Balances
-                  </li>
-                  <li className="menu-item">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="opacity-75"
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                      <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                      <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-                    </svg>
-                    Customers
-                  </li>
                   <li className="menu-item">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -283,31 +146,13 @@ function Sidebar() {
                       </div>
 
                       <span className="menu-icon">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <FaAngleDown size={15} />
                       </span>
                     </label>
 
                     <div className="menu-item-collapse">
                       <div className="min-h-0">
-                        <label className="menu-item menu-item-disabled ml-6">
-                          Create contract
-                        </label>
                         <label className="menu-item ml-6">All contracts</label>
-                        <label className="menu-item ml-6">
-                          Pending contracts
-                        </label>
-                        <label className="menu-item ml-6">Security</label>
                       </div>
                     </div>
                   </li>
@@ -316,7 +161,6 @@ function Sidebar() {
             </nav>
           </section>
           <section className="sidebar-footer justify-end bg-gray-2 pt-2">
-            <div className="divider my-0"></div>
             <div className="dropdown z-50 flex h-fit w-full cursor-pointer hover:bg-gray-4">
               <label
                 className="whites mx-2 flex h-fit w-full cursor-pointer p-0 hover:bg-gray-4"
@@ -327,31 +171,27 @@ function Sidebar() {
                     <img src={avatarImg} alt="avatar" />
                   </div>
 
-                  <div className="flex flex-col">
-                    <span>Sandra Marx</span>
+                  <div className="flex flex-col justify-center font-semibold">
+                    <span>{account.username}</span>
                   </div>
                 </div>
               </label>
               <div className="dropdown-menu-right-top dropdown-menu ml-2">
-                <a className="dropdown-item text-sm">Profile</a>
+                <Link to={"/user/profile"} className="dropdown-item text-sm">
+                  Profile
+                </Link>
                 <a tabIndex="-1" className="dropdown-item text-sm">
                   Account settings
                 </a>
-                <a tabIndex="-1" className="dropdown-item text-sm">
-                  Change email
-                </a>
-                <a tabIndex="-1" className="dropdown-item text-sm">
-                  Subscriptions
-                </a>
-                <a tabIndex="-1" className="dropdown-item text-sm">
-                  Change password
-                </a>
-                <a tabIndex="-1" className="dropdown-item text-sm">
-                  Refer a friend
-                </a>
-                <a tabIndex="-1" className="dropdown-item text-sm">
-                  Settings
-                </a>
+                <button
+                  className="dropdown-item hover:bg-red-600 hover:text-white text-sm"
+                  onClick={() => logout()}
+                >
+                  <span className="flex items-center gap-x-3">
+                    <FaPowerOff />
+                    Log out
+                  </span>
+                </button>
               </div>
             </div>
           </section>

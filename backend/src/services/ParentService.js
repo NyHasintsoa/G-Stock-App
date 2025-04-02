@@ -8,12 +8,15 @@ class ParentService {
 
   _rowLimit = 10;
 
+  /** @type {import("sequelize").FindOptions} */
+  _findOptions = {};
+
   /**
    * Get All Fields
    * @return {Promise}
    */
   async getAll() {
-    return await this._model.findAll();
+    return await this._model.findAll(this._findOptions);
   }
 
   /**
@@ -27,7 +30,9 @@ class ParentService {
     this._rowLimit = !isNaN(size) ? parseInt(size) : 10;
     const { count, rows } = await this._model.findAndCountAll({
       limit: this._rowLimit,
-      offset: (parseInt(page) - 1) * this._rowLimit
+      offset: (parseInt(page) - 1) * this._rowLimit,
+      attributes: this._findOptions.attributes ?? null,
+      include: this._findOptions.include ?? null
     });
     return {
       rows,
@@ -46,7 +51,7 @@ class ParentService {
    * @return  {Promize}
    */
   async getById(id) {
-    const result = await this._model.findByPk(id);
+    const result = await this._model.findByPk(id, this._findOptions);
     if (!result) throw new Error("Not Found");
     return result;
   }

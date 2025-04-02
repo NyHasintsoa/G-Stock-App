@@ -3,7 +3,12 @@ import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 
 class UserService extends ParentService {
-  _model = UserModel;
+  _model;
+
+  constructor() {
+    super();
+    this._model = UserModel;
+  }
 
   /**
    * Get User By email if it's exist

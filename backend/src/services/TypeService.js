@@ -4,7 +4,12 @@ import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 
 class TypeService extends ParentService {
-  _model = TypeModel;
+  _model;
+
+  constructor() {
+    super();
+    this._model = TypeModel;
+  }
 
   async getProductToTypeById(id) {
     const typeProduct = await this._model.findByPk(id, {

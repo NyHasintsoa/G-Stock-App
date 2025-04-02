@@ -18,6 +18,7 @@ import userRoutes from "./src/routes/user-route.js";
 import typeRoutes from "./src/routes/type-route.js";
 import supplierRoutes from "./src/routes/supplier-route.js";
 import homeRoutes from "./src/routes/home-route.js";
+import orderRoutes from "./src/routes/order-route.js";
 import "./src/models/Migration.js";
 
 dotenv.config();
@@ -59,6 +60,7 @@ fastify.register(dashboardRoutes);
 fastify.register(testRoutes);
 fastify.register(supplierRoutes);
 fastify.register(homeRoutes);
+fastify.register(orderRoutes);
 
 /**
  * Fastify Server Configuration

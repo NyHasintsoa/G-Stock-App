@@ -11,6 +11,7 @@ SupplierModel.init(
     },
     name: {
       type: DataTypes.STRING(200),
+      allowNull: false,
       unique: true
     },
     address: {
@@ -25,7 +26,8 @@ SupplierModel.init(
   {
     sequelize,
     modelName: "suppliers",
-    timestamps: true
+    timestamps: true,
+    underscored: true
   }
 );
 

@@ -3,7 +3,8 @@ import SupplierModel from "./SupplierModel.js";
 import TypeModel from "./TypeModel.js";
 import CategoryModel from "./CategoryModel.js";
 import UserModel from "./UserModel.js";
-// import sequelize from "./DatabaseConnection.js";
+import OrderModel from "./OrderModel.js";
+import OrderProductsModel from "./OrderProductsModel.js";
 
 ProductModel.belongsToMany(CategoryModel, {
   through: "products_categories",
@@ -31,7 +32,35 @@ ProductModel.belongsTo(TypeModel, {
 
 TypeModel.hasMany(ProductModel);
 
-// Migration de la base de donnée
+OrderModel.belongsTo(UserModel, {
+  foreignKey: "userId",
+  onDelete: "RESTRICT",
+  onUpdate: "RESTRICT"
+});
+
+UserModel.hasMany(OrderModel, {
+  foreignKey: "userId"
+});
+
+OrderModel.belongsToMany(ProductModel, {
+  through: OrderProductsModel
+});
+
+ProductModel.belongsToMany(OrderModel, {
+  through: OrderProductsModel
+});
+
+OrderModel.hasMany(OrderProductsModel);
+
+ProductModel.hasMany(OrderProductsModel);
+
+OrderProductsModel.belongsTo(ProductModel, {
+  foreignKey: "productId",
+  onDelete: "RESTRICT",
+  onUpdate: "RESTRICT"
+});
+
+// import sequelize from "./DatabaseConnection.js";
 // await sequelize.drop();
 // sequelize
 // .sync({ force: true })

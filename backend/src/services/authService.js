@@ -34,7 +34,12 @@ class AuthService {
       const user = await this.#userService.getByEmail(email);
       if (!(await this.#verifyPassword(password, user.password)))
         throw new Error("Please check your email or password");
-      return this.#generateToken(email, user.username, user.profile_image);
+      return this.#generateToken(
+        user.id,
+        email,
+        user.username,
+        user.profile_image
+      );
     } catch (error) {
       throw new Error("Please check your email or password");
     }
@@ -47,15 +52,17 @@ class AuthService {
    * @param {string} profile_image url user's picture
    * @return {Object}
    */
-  #generateToken(email, username, profile_image) {
+  #generateToken(id, email, username, profile_image) {
     const token = this.#fastify.jwt.sign({
-      email: email,
-      username: username,
-      profile_image: profile_image
+      id,
+      email,
+      username,
+      profile_image
     });
     return {
       token,
       userInfo: {
+        id,
         email,
         username,
         profile_image

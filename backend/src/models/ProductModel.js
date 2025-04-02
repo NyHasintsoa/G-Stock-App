@@ -30,7 +30,8 @@ ProductModel.init(
   {
     sequelize,
     modelName: "products",
-    timestamps: true
+    timestamps: true,
+    underscored: true
   }
 );
 

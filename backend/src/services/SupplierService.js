@@ -4,7 +4,12 @@ import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 
 class SupplierService extends ParentService {
-  _model = SupplierModel;
+  _model;
+
+  constructor() {
+    super();
+    this._model = SupplierModel;
+  }
 
   async getProductToSupplierById(id) {
     const supplier = await this._model.findByPk(id, {

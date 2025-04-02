@@ -4,7 +4,12 @@ import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 
 class CategoryService extends ParentService {
-  _model = CategoryModel;
+  _model;
+
+  constructor() {
+    super();
+    this._model = CategoryModel;
+  }
 
   /**
    * Add New Category

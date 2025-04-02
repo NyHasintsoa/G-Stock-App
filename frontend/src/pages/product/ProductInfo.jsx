@@ -6,8 +6,10 @@ import useFetchItem from "../../hooks/useFetchItem.js";
 import productService from "../../services/ProductService.js";
 import Spinner from "../../components/spinner/Spinner.jsx";
 import { useEffect } from "react";
+import { useCartStore } from "../../store/store.js";
 
 function ProductInfo() {
+  const { addToCart } = useCartStore();
   const { idProduct } = useParams();
   const { item, loading } = useFetchItem(
     productService.getById.bind(productService),
@@ -18,29 +20,24 @@ function ProductInfo() {
   useEffect(() => {
     setValue("id", idProduct);
     setValue("price", item.price);
-    setValue("description", item.description);
     setValue("path_img", item.path_img);
     setValue("name", item.name);
   }, [item]);
 
   const onSubmit = async (data) => {
-    console.log(
-      "\n###########################################\n",
-      data,
-      "\n###########################################\n"
-    );
+    data.qte = parseInt(data.qte);
+    addToCart(data);
+    setValue("qte", 0);
   };
 
   const updateNumber = (actionState) => {
-    const { qte } = getValues();
-    if (actionState === "up") setValue("qte", qte + 1);
-    else if (actionState === "down") {
-      setValue("qte", qte - 1);
-      if (qte <= 0) setValue("qte", 0);
-    }
+    let { qte } = getValues();
+    if (actionState === "up") setValue("qte", parseInt(qte) + 1);
+    else if (actionState === "down") setValue("qte", parseInt(qte) - 1);
+    if (qte <= 0) setValue("qte", 1);
   };
 
-  const { errors, isSubmitting } = formState;
+  const { errors } = formState;
 
   return (
     <>
@@ -76,7 +73,10 @@ function ProductInfo() {
                 {...register("qte", {
                   required:
                     "Veuillez entrer la quantité que vous voulez obtenir",
-                  valueAsNumber: "La valeur doit être un nombre"
+                  pattern: {
+                    value: /^[1-9]\d*$/,
+                    message: "La quantité doit être un nombre"
+                  }
                 })}
                 type="text"
                 className="input input-solid-primary h-full text-2xl"
@@ -107,6 +107,11 @@ function ProductInfo() {
                 &nbsp;Commander
               </button>
             </form>
+
+            {errors.qte && (
+              <div className="text-red-600">{errors.qte.message}</div>
+            )}
+
             {item.supplier !== undefined ? (
               <div className="border-[1px] border-gray-400 border-solid rounded-lg p-5">
                 <h3 className="text-lg">{item.supplier.name}</h3>

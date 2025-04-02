@@ -3,13 +3,11 @@ import { LiaShoppingCartSolid } from "react-icons/lia";
 import avatarImg from "../../assets/unknown.jpg";
 import { FaPowerOff } from "react-icons/fa6";
 import useAuth, { AuthStatus } from "../../hooks/useAuth.js";
+import { useCartStore } from "../../store/store.js";
 
 function NavbarEnd() {
   const { status, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-  };
+  const { carts } = useCartStore();
 
   const isConnected = status === AuthStatus.Authenticated;
 
@@ -18,7 +16,7 @@ function NavbarEnd() {
       <div className="navbar-end">
         <label htmlFor="user-cart-list" className="btn btn-primary">
           <LiaShoppingCartSolid size={25} />
-          Panier (50)
+          Panier ({carts.length})
         </label>
         <Link to={"/supplier"} className="navbar-item">
           Nos Fournisseur
@@ -44,7 +42,7 @@ function NavbarEnd() {
                     Subscriptions
                   </Link>
                   <button
-                    onClick={handleLogout}
+                    onClick={() => logout()}
                     type="button"
                     className="dropdown-item hover:bg-red-600 hover:text-white text-sm"
                   >
