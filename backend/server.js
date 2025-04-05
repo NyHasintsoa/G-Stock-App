@@ -10,14 +10,13 @@ import fastifyCors from "./src/plugins/fastifyCors.js";
 import fastifyView from "./src/plugins/fastifyView.js";
 import swaggerDocs from "./src/docs/swaggerDocs.js";
 import productRoutes from "./src/routes/product-route.js";
-import dashboardRoutes from "./src/routes/dashboard-route.js";
 import categoryRoutes from "./src/routes/category-route.js";
 import testRoutes from "./src/routes/test-route.js";
 import authRoutes from "./src/routes/auth-route.js";
 import userRoutes from "./src/routes/user-route.js";
 import typeRoutes from "./src/routes/type-route.js";
 import supplierRoutes from "./src/routes/supplier-route.js";
-import homeRoutes from "./src/routes/home-route.js";
+import mainRoutes from "./src/routes/main-route.js";
 import orderRoutes from "./src/routes/order-route.js";
 import "./src/models/Migration.js";
 
@@ -56,10 +55,9 @@ fastify.register(userRoutes);
 fastify.register(productRoutes);
 fastify.register(categoryRoutes);
 fastify.register(typeRoutes);
-fastify.register(dashboardRoutes);
 fastify.register(testRoutes);
 fastify.register(supplierRoutes);
-fastify.register(homeRoutes);
+fastify.register(mainRoutes);
 fastify.register(orderRoutes);
 
 /**

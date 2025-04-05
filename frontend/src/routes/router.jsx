@@ -16,6 +16,11 @@ import NotFoundError from "../pages/error/NotFoundError.jsx";
 import RecoverAccount from "../pages/auth/RecoverAccount.jsx";
 import UserProfile from "../pages/user/UserProfile.jsx";
 import Dashboard from "../pages/admin/dashboard/Dashboard.jsx";
+import ProductListAdmin from "../pages/admin/product/ProductListAdmin.jsx";
+import CategoryListAdmin from "../pages/admin/category/CategoryListAdmin.jsx";
+import SupplierListAdmin from "../pages/admin/supplier/SupplierListAdmin.jsx";
+import TypeListAdmin from "../pages/admin/typeProduct/TypeListAdmin.jsx";
+import StockListAdmin from "../pages/admin/stock/StockListAdmin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -90,8 +95,24 @@ const router = createBrowserRouter([
             element: <Dashboard />
           },
           {
-            path: "loader",
-            element: <Loader />
+            path: "catalogs/products",
+            element: <ProductListAdmin />
+          },
+          {
+            path: "catalogs/categories",
+            element: <CategoryListAdmin />
+          },
+          {
+            path: "catalogs/suppliers",
+            element: <SupplierListAdmin />
+          },
+          {
+            path: "types/products",
+            element: <TypeListAdmin />
+          },
+          {
+            path: "stock/products",
+            element: <StockListAdmin />
           }
         ]
       }

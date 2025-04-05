@@ -1,9 +1,11 @@
 import { Link } from "react-router";
-import { FaAngleDown, FaPowerOff, FaRegUser, FaUser } from "react-icons/fa6";
+import { FaAngleDown, FaDisplay, FaPowerOff } from "react-icons/fa6";
 import avatarImg from "../../assets/unknown.jpg";
 import useAccount from "../../hooks/useAccount.js";
 import IconGear from "../icons/IconGear.jsx";
 import useAuth from "../../hooks/useAuth.js";
+import IconProduct from "../icons/IconProduct.jsx";
+import SidebarLink from "./SidebarLink.jsx";
 
 function Sidebar() {
   const { account } = useAccount();
@@ -50,23 +52,23 @@ function Sidebar() {
               <section className="menu-section px-4">
                 <span className="menu-title">Main menu</span>
                 <ul className="menu-items">
-                  <li className="menu-item">
-                    <IconGear />
-                    <span>General</span>
-                  </li>
+                  <SidebarLink to={"/admin"}>
+                    <FaDisplay />
+                    <span>Dashboard</span>
+                  </SidebarLink>
                   <li>
                     <input
                       type="checkbox"
-                      id="menu-1"
+                      id="menu-products"
                       className="menu-toggle"
                     />
                     <label
                       className="menu-item justify-between"
-                      htmlFor="menu-1"
+                      htmlFor="menu-products"
                     >
                       <div className="flex gap-2">
-                        <FaRegUser size={17} />
-                        <span>Account</span>
+                        <IconProduct />
+                        <span>Catalogue</span>
                       </div>
                       <span className="menu-icon">
                         <FaAngleDown size={15} />
@@ -74,13 +76,24 @@ function Sidebar() {
                     </label>
                     <div className="menu-item-collapse">
                       <div className="min-h-0">
-                        <label className="menu-item menu-item-disabled ml-6">
-                          Change Email
-                        </label>
-                        <label className="menu-item ml-6">Profile</label>
-                        <label className="menu-item ml-6">
-                          Change Password
-                        </label>
+                        <SidebarLink to={"/admin/catalogs/products"} isSubmenu>
+                          Produits
+                        </SidebarLink>
+                        <SidebarLink
+                          to={"/admin/catalogs/categories"}
+                          isSubmenu
+                        >
+                          Catégories
+                        </SidebarLink>
+                        <SidebarLink to={"/admin/catalogs/suppliers"} isSubmenu>
+                          Fournisseurs
+                        </SidebarLink>
+                        <SidebarLink to={"/admin/types/products"} isSubmenu>
+                          Types Produit
+                        </SidebarLink>
+                        <SidebarLink to={"/admin/stock/products"} isSubmenu>
+                          Stock
+                        </SidebarLink>
                       </div>
                     </div>
                   </li>
@@ -91,23 +104,7 @@ function Sidebar() {
                 <span className="menu-title">Settings</span>
                 <ul className="menu-items">
                   <li className="menu-item">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="opacity-75"
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M7 10l5 -6l5 6"></path>
-                      <path d="M21 10l-2 8a2 2.5 0 0 1 -2 2h-10a2 2.5 0 0 1 -2 -2l-2 -8z"></path>
-                      <path d="M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                    </svg>
+                    <IconProduct />
                     Products
                   </li>
                   <li>
@@ -155,6 +152,10 @@ function Sidebar() {
                         <label className="menu-item ml-6">All contracts</label>
                       </div>
                     </div>
+                  </li>
+                  <li className="menu-item">
+                    <IconGear />
+                    <span>General</span>
                   </li>
                 </ul>
               </section>

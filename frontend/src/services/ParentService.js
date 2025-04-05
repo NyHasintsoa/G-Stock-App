@@ -5,14 +5,15 @@ class ParentService {
   _requestPrefix;
 
   /** @type {string} Backend Server URL */
-  _backendUrl = import.meta.env.VITE_BACKEND_URL;
+  _backendUrl;
 
   constructor(requestPrefix) {
     this._requestPrefix = requestPrefix;
+    this._backendUrl = import.meta.env.VITE_BACKEND_URL;
   }
 
   async getAll() {
-    const r = await fetch(`${this._backendUr + this._requestPrefix}`, {
+    const r = await fetch(`${this._backendUrl + this._requestPrefix}`, {
       method: "GET",
       credentials: "include",
       headers: {

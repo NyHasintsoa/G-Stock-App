@@ -29,7 +29,7 @@ const usePagination = (apiFetch, itemsPerPage = 10) => {
     startTransition(async () => {
       try {
         await wait();
-        const { data } = await apiFetch(page, 8);
+        const { data } = await apiFetch(page, itemsPerPage);
         setRows(data.rows);
         if (totalPages === 0) setTotalPages(data.page.totalPages);
       } catch (error) {

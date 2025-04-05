@@ -8,7 +8,12 @@ import { transformToRegex } from "../utils/matchUrl.js";
  * @param {Object} options plugin options
  */
 const jwtAuthToken = (fastify, options) => {
-  const SECURED_URLS = ["/api/users", "/api/users/", "/api/orders"];
+  const SECURED_URLS = [
+    "/api/users",
+    "/api/users/",
+    "/api/orders",
+    "/api/dashboard/counter"
+  ];
 
   fastify.register(fastifyJwt, {
     secret: process.env.JWT_SECRET,

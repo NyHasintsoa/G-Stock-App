@@ -28,7 +28,8 @@ class ParentService {
     let { page, size } = req.query;
     page = !isNaN(page) ? page : 1;
     this._rowLimit = !isNaN(size) ? parseInt(size) : 10;
-    const { count, rows } = await this._model.findAndCountAll({
+    const count = await this._model.count();
+    const rows = await this._model.findAll({
       limit: this._rowLimit,
       offset: (parseInt(page) - 1) * this._rowLimit,
       attributes: this._findOptions.attributes ?? null,
@@ -54,6 +55,15 @@ class ParentService {
     const result = await this._model.findByPk(id, this._findOptions);
     if (!result) throw new Error("Not Found");
     return result;
+  }
+
+  /**
+   * Count All Items in the model
+   * @param {Omit<import("sequelize").CountOptions>} options Count Options
+   * @return {Promise}
+   */
+  async count(options = undefined) {
+    return await this._model.count(options);
   }
 }
 
