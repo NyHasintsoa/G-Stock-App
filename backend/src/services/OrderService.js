@@ -1,4 +1,4 @@
-import { Op, QueryTypes } from "sequelize";
+import { Op, QueryTypes, where } from "sequelize";
 import OrderModel from "../models/OrderModel.js";
 import OrderProductsModel from "../models/OrderProductsModel.js";
 import ProductModel from "../models/ProductModel.js";
@@ -8,11 +8,16 @@ import UserModel from "../models/UserModel.js";
 import generateId from "../utils/generateId.js";
 import ParentService from "./ParentService.js";
 import sequelize from "../models/DatabaseConnection.js";
+import StockModel from "../models/StockModel.js";
+import ProductService from "./ProductService.js";
 
 class OrderService extends ParentService {
   _model;
 
   #orderProductsModel;
+
+  /** @type {ProductService} */
+  #productService;
 
   /** @type {import("sequelize").FindOptions} */
   _findOptions = {
@@ -45,6 +50,7 @@ class OrderService extends ParentService {
     super();
     this._model = OrderModel;
     this.#orderProductsModel = OrderProductsModel;
+    this.#productService = new ProductService();
   }
 
   /**
@@ -67,6 +73,19 @@ class OrderService extends ParentService {
         price: cart.price
       });
       listCarts.push(cartItem);
+      const productStock = await this.#productService.findStockByProductId(
+        cart.id
+      );
+      StockModel.update(
+        {
+          qte: productStock.qte - cart.qte
+        },
+        {
+          where: {
+            productId: cart.id
+          }
+        }
+      );
     }
     return {
       order,

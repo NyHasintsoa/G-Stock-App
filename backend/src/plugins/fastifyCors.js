@@ -8,7 +8,7 @@ import cors from "@fastify/cors";
  */
 const fastifyCorsPlugin = async (fastify, options) => {
   fastify.register(cors, {
-    origin: [process.env.FRONTEND_URL],
+    origin: [process.env.FRONTEND_URL, "domain.local"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"]
     // allowedHeaders: ["Content-Type", "Authorization", ""]

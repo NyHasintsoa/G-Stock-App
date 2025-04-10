@@ -21,6 +21,8 @@ import CategoryListAdmin from "../pages/admin/category/CategoryListAdmin.jsx";
 import SupplierListAdmin from "../pages/admin/supplier/SupplierListAdmin.jsx";
 import TypeListAdmin from "../pages/admin/typeProduct/TypeListAdmin.jsx";
 import StockListAdmin from "../pages/admin/stock/StockListAdmin.jsx";
+import AddProductAdmin from "../pages/admin/product/AddProductAdmin.jsx";
+import EditProductAdmin from "../pages/admin/product/EditProductAdmin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +99,14 @@ const router = createBrowserRouter([
           {
             path: "catalogs/products",
             element: <ProductListAdmin />
+          },
+          {
+            path: "catalogs/products/new",
+            element: <AddProductAdmin />
+          },
+          {
+            path: "catalogs/products/:idProduct/edit",
+            element: <EditProductAdmin />
           },
           {
             path: "catalogs/categories",

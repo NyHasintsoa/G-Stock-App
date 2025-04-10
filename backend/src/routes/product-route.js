@@ -54,7 +54,7 @@ const productRoutes = async (fastify, options) => {
     }
   );
 
-  fastify.post("/api/products/upload/:id", async (req, reply) => {
+  fastify.put("/api/products/upload/:id", async (req, reply) => {
     try {
       await productService.uploadImage(req);
       reply.status(200).send({

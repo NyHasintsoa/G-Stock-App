@@ -37,6 +37,30 @@ const mainRoutes = async (fastify, options) => {
       reply.status(500).send(error);
     }
   });
+
+  fastify.get("/api/stocks/products", async (req, reply) => {
+    try {
+      reply.status(200).send({
+        message: "Get Stock Products",
+        data: await productService.getStockProducts()
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
+
+  fastify.get("/api/products/hydrate", async (req, reply) => {
+    try {
+      const result = await productService.findStockByProductId(
+        "01eb23b1d22130ae99bb"
+      );
+      reply.status(200).send({
+        result
+      });
+    } catch (error) {
+      reply.status(500).send(error);
+    }
+  });
 };
 
 export default mainRoutes;

@@ -103,10 +103,6 @@ function Sidebar() {
               <section className="menu-section px-4">
                 <span className="menu-title">Settings</span>
                 <ul className="menu-items">
-                  <li className="menu-item">
-                    <IconProduct />
-                    Products
-                  </li>
                   <li>
                     <input
                       type="checkbox"

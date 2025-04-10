@@ -2,7 +2,7 @@ function CounterTooltip({ children }) {
   return (
     <>
       <span
-        className="tooltip tooltip-top hover:cursor-pointer"
+        className="tooltip tooltip-top hover:cursor-pointer dark:text-white"
         data-tooltip={children}
       >
         <svg

@@ -44,7 +44,7 @@ function CategoryListAdmin() {
                 <CategoryListItems categories={categories} />
               ) : (
                 <tr>
-                  <td colSpan={5}>
+                  <td colSpan={2}>
                     <Spinner />
                   </td>
                 </tr>

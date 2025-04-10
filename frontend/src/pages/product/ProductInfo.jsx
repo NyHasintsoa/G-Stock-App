@@ -5,11 +5,12 @@ import productImg from "../../assets/product.jpg";
 import useFetchItem from "../../hooks/useFetchItem.js";
 import productService from "../../services/ProductService.js";
 import Spinner from "../../components/spinner/Spinner.jsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "../../store/store.js";
 
 function ProductInfo() {
-  const { addToCart } = useCartStore();
+  const [qteA, setQteA] = useState(0);
+  const { addToCart, carts } = useCartStore();
   const { idProduct } = useParams();
   const { item, loading } = useFetchItem(
     productService.getById.bind(productService),
@@ -22,6 +23,14 @@ function ProductInfo() {
     setValue("price", item.price);
     setValue("path_img", item.path_img);
     setValue("name", item.name);
+    if (item.stock) {
+      carts.forEach((cart) => {
+        if (cart.id === idProduct) {
+          item.stock.qte -= cart.qte;
+          return;
+        }
+      });
+    }
   }, [item]);
 
   const onSubmit = async (data) => {
@@ -32,8 +41,13 @@ function ProductInfo() {
 
   const updateNumber = (actionState) => {
     let { qte } = getValues();
-    if (actionState === "up") setValue("qte", parseInt(qte) + 1);
-    else if (actionState === "down") setValue("qte", parseInt(qte) - 1);
+    if (actionState === "up") {
+      setValue("qte", parseInt(qte) + 1);
+      setQteA(parseInt(qte) + 1);
+    } else if (actionState === "down") {
+      setValue("qte", parseInt(qte) - 1);
+      setQteA(parseInt(qte) - 1);
+    }
     if (qte <= 0) setValue("qte", 1);
   };
 
@@ -78,6 +92,9 @@ function ProductInfo() {
                     message: "La quantité doit être un nombre"
                   }
                 })}
+                onChange={(e) => {
+                  setQteA(e.target.value);
+                }}
                 type="text"
                 className="input input-solid-primary h-full text-2xl"
                 placeholder="Quantité"
@@ -102,6 +119,7 @@ function ProductInfo() {
               <button
                 type="submit"
                 className="btn btn-outline-primary h-full text-xl"
+                disabled={item.stock ? item.stock.qte < qteA : false}
               >
                 <FaCartPlus size={20} />
                 &nbsp;Commander
@@ -112,12 +130,20 @@ function ProductInfo() {
               <div className="text-red-600">{errors.qte.message}</div>
             )}
 
+            {(item.stock ? item.stock.qte < qteA : false) && (
+              <div className="text-red-600">Quantité du Stock dépassé</div>
+            )}
+
             {item.supplier !== undefined ? (
               <div className="border-[1px] border-gray-400 border-solid rounded-lg p-5">
                 <h3 className="text-lg">{item.supplier.name}</h3>
                 <div className="text-gray-500">
                   <div className="">{item.supplier.address}</div>
-                  <div className="">255 Produits en stock</div>
+                  {item.stock ? (
+                    <div className="">{item.stock.qte} Produits en stock</div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             ) : (

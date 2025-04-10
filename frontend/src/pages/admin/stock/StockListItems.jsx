@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-function ProductListItems({ products }) {
+function StockListItems({ products }) {
   return (
     <>
       {Array.from(products).map((product, index) => (
@@ -8,11 +8,8 @@ function ProductListItems({ products }) {
           <th>{product.name}</th>
           <td>{product.price} Ar</td>
           <td>{product.supplier.name}</td>
-          <td>
-            <span className="badge badge-flat-primary">
-              {product.types_product.name}
-            </span>
-          </td>
+          <td>{product.types_product.name}</td>
+          <td>{product.stock ? product.stock.qte : 0}</td>
           <td className="flex gap-x-5">
             <Link
               to={`/admin/catalogs/products/${product.id}/edit`}
@@ -20,12 +17,12 @@ function ProductListItems({ products }) {
             >
               Edit
             </Link>
-            <label
-              className="text-green-600 hover:cursor-pointer"
-              htmlFor="modal-product-show"
+            <Link
+              to={`/admin/catalogs/products/${product.id}/show`}
+              className="text-green-600"
             >
               Show
-            </label>
+            </Link>
           </td>
         </tr>
       ))}
@@ -33,4 +30,4 @@ function ProductListItems({ products }) {
   );
 }
 
-export default ProductListItems;
+export default StockListItems;

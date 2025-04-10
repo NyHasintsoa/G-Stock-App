@@ -5,6 +5,7 @@ import CategoryModel from "./CategoryModel.js";
 import UserModel from "./UserModel.js";
 import OrderModel from "./OrderModel.js";
 import OrderProductsModel from "./OrderProductsModel.js";
+import StockModel from "./StockModel.js";
 
 ProductModel.belongsToMany(CategoryModel, {
   through: "products_categories",
@@ -18,7 +19,7 @@ CategoryModel.belongsToMany(ProductModel, {
 
 ProductModel.belongsTo(SupplierModel, {
   foreignKey: "supplierId",
-  onDelete: "RESTRICT",
+  onDelete: "CASCADE",
   onUpdate: "RESTRICT"
 });
 
@@ -26,7 +27,7 @@ SupplierModel.hasMany(ProductModel);
 
 ProductModel.belongsTo(TypeModel, {
   foreignKey: "typesProductId",
-  onDelete: "RESTRICT",
+  onDelete: "CASCADE",
   onUpdate: "RESTRICT"
 });
 
@@ -34,7 +35,7 @@ TypeModel.hasMany(ProductModel);
 
 OrderModel.belongsTo(UserModel, {
   foreignKey: "userId",
-  onDelete: "RESTRICT",
+  onDelete: "CASCADE",
   onUpdate: "RESTRICT"
 });
 
@@ -56,9 +57,17 @@ ProductModel.hasMany(OrderProductsModel);
 
 OrderProductsModel.belongsTo(ProductModel, {
   foreignKey: "productId",
-  onDelete: "RESTRICT",
+  onDelete: "CASCADE",
+  onUpdate: "NONE"
+});
+
+StockModel.belongsTo(ProductModel, {
+  foreignKey: "productId",
+  onDelete: "CASCADE",
   onUpdate: "RESTRICT"
 });
+
+ProductModel.hasOne(StockModel);
 
 // import sequelize from "./DatabaseConnection.js";
 // await sequelize.drop();

@@ -1,9 +1,11 @@
-import { FaSearch } from "react-icons/fa";
+import { FaPlusCircle, FaSearch } from "react-icons/fa";
 import usePagination from "../../../hooks/usePagination.js";
 import productService from "../../../services/ProductService.js";
 import ProductListItems from "./ProductListItems.jsx";
 import Pagination from "../../../components/pagination/Pagination.jsx";
 import Spinner from "../../../components/spinner/Spinner.jsx";
+import { Link } from "react-router";
+import ShowProductModal from "../../../components/product/ShowProductModal.jsx";
 
 function ProductListAdmin() {
   const {
@@ -17,17 +19,26 @@ function ProductListAdmin() {
   return (
     <>
       <div className="border-[1px] rounded-xl p-5 border-gray-700">
-        <div className="px-5 pb-3 flex justify-between items-center">
+        <div className="px-5 pb-3">
           <h1>Liste des produits</h1>
-          <div className="flex justify-between">
-            <input
-              type="text"
-              placeholder="Recherche"
-              className="input focus:border-blue-500 focus:ring-blue-500"
-            />
-            <button type="button" className="btn">
-              <FaSearch />
-            </button>
+          <div className="py-2 flex items-center justify-between">
+            <div className="flex">
+              <input
+                type="text"
+                placeholder="Recherche"
+                className="input focus:border-blue-500 focus:ring-blue-500"
+              />
+              <button type="button" className="btn bg-blue-400 text-white">
+                <FaSearch />
+              </button>
+            </div>
+            <Link
+              to={"/admin/catalogs/products/new"}
+              className="btn btn-primary"
+            >
+              <FaPlusCircle className="me-3" size={18} />
+              Nouveau Produit
+            </Link>
           </div>
         </div>
         <div className="flex w-full overflow-x-auto">
@@ -69,6 +80,7 @@ function ProductListAdmin() {
           )}
         </div>
       </div>
+      <ShowProductModal />
     </>
   );
 }

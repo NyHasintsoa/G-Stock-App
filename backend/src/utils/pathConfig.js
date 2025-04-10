@@ -27,10 +27,10 @@ const templateDir = path.join(
  */
 const uploadPath = async (folder, filename) => {
   let uploadTime = new Date().getTime().toString();
-  const uploadDir = path.join(uploadDir, folder, uploadTime);
-  await fs.mkdir(uploadDir);
+  const pathUploadDir = path.join(uploadDir, folder, uploadTime);
+  await fs.mkdir(pathUploadDir);
   return {
-    path: path.join(uploadDir, filename),
+    path: path.join(pathUploadDir, filename),
     time: uploadTime
   };
 };

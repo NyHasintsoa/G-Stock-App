@@ -8,11 +8,14 @@ import CategoryModel from "../models/CategoryModel.js";
 import SupplierModel from "../models/SupplierModel.js";
 import TypeModel from "../models/TypeModel.js";
 import CategoryService from "./CategoryService.js";
+import StockModel from "../models/StockModel.js";
 
 class ProductService extends ParentService {
   _model;
 
   #categoryService;
+
+  #stockModel;
 
   /** @type {import("sequelize").FindOptions} */
   _findOptions = {
@@ -28,6 +31,9 @@ class ProductService extends ParentService {
       },
       {
         model: TypeModel
+      },
+      {
+        model: StockModel
       }
     ]
   };
@@ -35,6 +41,7 @@ class ProductService extends ParentService {
   constructor() {
     super();
     this._model = ProductModel;
+    this.#stockModel = StockModel;
     this.#categoryService = new CategoryService();
   }
 
@@ -92,6 +99,27 @@ class ProductService extends ParentService {
         }
       }
     );
+  }
+
+  async getStockProducts() {
+    return this.#stockModel.findAll({
+      include: [
+        {
+          model: ProductModel
+        }
+      ]
+    });
+  }
+
+  /**
+   * Get Stock By Product id
+   * @param {string} productId Product id
+   * @return {Promise}
+   */
+  async findStockByProductId(productId) {
+    return await this.#stockModel.findOne({
+      where: { productId }
+    });
   }
 }
 
