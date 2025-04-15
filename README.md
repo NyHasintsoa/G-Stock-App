@@ -6,4 +6,8 @@ To upload Product Image create products directory
 
 ```bash
 mkdir ./backend/upload/products
+cd ./backend
+npm i
+cd ../frontend
+npm i
 ```
