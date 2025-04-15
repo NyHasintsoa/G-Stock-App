@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 import InputForm from "../../../components/inputForm/InputForm.jsx";
 import SubmitBtn from "../../../components/submitBtn/SubmitBtn.jsx";
 import { wait } from "../../../utils/api.js";
@@ -8,9 +10,11 @@ import categoryService from "../../../services/CategoryService.js";
 import SelectMultipleForm from "../../../components/inputForm/SelectMultipleForm.jsx";
 import productService from "../../../services/ProductService.js";
 import typeService from "../../../services/TypeService.js";
+import { ProductForm as FormFields } from "../../../forms/ProductForm.js";
 
 function AddProductAdmin() {
   const { register, handleSubmit, formState, control } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     await wait();
@@ -18,7 +22,12 @@ function AddProductAdmin() {
       data.categoriesId,
       (category) => category.value
     );
-    productService.addProduct(data);
+    data.supplierId = productService.getIdBySelectForm(data.supplierId);
+    data.typesProductId = productService.getIdBySelectForm(data.typesProductId);
+    if (productService.addProduct(data)) {
+      toast.success("Produit ajouter avec succès !");
+      navigate("/admin/catalogs/products");
+    }
   };
 
   const { errors, isSubmitting } = formState;
@@ -50,13 +59,13 @@ function AddProductAdmin() {
             </div>
             <div className="">
               <SelectForm
-                register={register}
+                control={control}
                 options={FormFields.supplier}
                 errorField={errors[FormFields.supplier.name]}
                 fetchCb={supplierService.getAll.bind(supplierService)}
               />
               <SelectForm
-                register={register}
+                control={control}
                 options={FormFields.typesProduct}
                 errorField={errors[FormFields.typesProduct.name]}
                 fetchCb={typeService.getAll.bind(typeService)}
@@ -81,78 +90,5 @@ function AddProductAdmin() {
     </div>
   );
 }
-
-const FormFields = {
-  name: {
-    name: "name",
-    type: "text",
-    label: "Désignation du produit",
-    rules: {
-      required: "Veuillez entrer le nom du produit",
-      minLength: {
-        value: 3,
-        message: "Ce champ doit comporter au moins 3 caractères"
-      }
-    }
-  },
-  price: {
-    name: "price",
-    type: "number",
-    label: "Prix Unitaire",
-    rules: {
-      required: "Veuillez entrer le prix du produit",
-      minLength: {
-        value: 1,
-        message: "Ce champ doit comporter au moins 1 caractères"
-      }
-    }
-  },
-  description: {
-    name: "description",
-    type: "textarea",
-    label: "Description"
-  },
-  productImage: {
-    name: "product-image",
-    type: "file",
-    label: "Photo du produit"
-  },
-  supplier: {
-    name: "supplierId",
-    type: "select",
-    label: "Fournisseur",
-    rules: {
-      required: "Veuillez choisir le fournisseur du produit"
-    },
-    selectOptions: {
-      id: "id",
-      value: "name"
-    }
-  },
-  typesProduct: {
-    name: "typesProductId",
-    type: "select",
-    label: "Type du produit",
-    rules: {
-      required: "Veuillez choisir le type du produit"
-    },
-    selectOptions: {
-      id: "id",
-      value: "name"
-    }
-  },
-  categories: {
-    name: "categoriesId",
-    type: "select",
-    label: "Catégories du produit",
-    rules: {
-      required: "Veuillez choisir les catégories du produit"
-    },
-    selectOptions: {
-      id: "id",
-      value: "name"
-    }
-  }
-};
 
 export default AddProductAdmin;

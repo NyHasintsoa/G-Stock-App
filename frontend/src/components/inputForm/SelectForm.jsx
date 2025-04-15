@@ -1,21 +1,37 @@
 import { useCallback, useEffect, useState, useTransition } from "react";
+import { Controller } from "react-hook-form";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 import { wait } from "../../utils/api.js";
 
-function SelectForm({ register, options, errorField, fetchCb, value = null }) {
+function SelectForm({ control, options, errorField, fetchCb, value }) {
   const [items, setItems] = useState([]);
+  const [selected, setSelected] = useState(undefined);
   const [loading, startTransition] = useTransition();
+  const animatedComponents = makeAnimated();
 
   const hydrateSelect = useCallback(() => {
     startTransition(async () => {
       await wait();
       const { data } = await fetchCb();
-      setItems(data);
+      setItems(
+        data.map((item) => {
+          return {
+            value: item[options.selectOptions.id],
+            label: item[options.selectOptions.value]
+          };
+        })
+      );
     });
   }, []);
 
   useEffect(() => {
     hydrateSelect();
   }, []);
+
+  useEffect(() => {
+    if (value && value.value !== undefined) setSelected(value);
+  }, [value]);
 
   return (
     <div className="form-field mb-2">
@@ -26,20 +42,23 @@ function SelectForm({ register, options, errorField, fetchCb, value = null }) {
       {loading ? (
         <div className="skeleton border-2 h-10 w-full rounded-xl"></div>
       ) : (
-        <select
-          {...register(options.name, options.rules)}
-          id={"select-" + options.name}
-          className={
-            `select max-w-full focus:border-blue-500 focus:ring-blue-500` +
-            (errorField && " border-red-600")
-          }
-        >
-          {items.map((item, index) => (
-            <option key={index} value={item[options.selectOptions.id]}>
-              {item[options.selectOptions.value]}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name={options.name}
+          control={control}
+          rules={options.rules}
+          render={({ field }) => (
+            <Select
+              {...field}
+              onChange={(selectOptions) => {
+                field.onChange(selectOptions);
+                setSelected(selectOptions);
+              }}
+              value={selected}
+              components={animatedComponents}
+              options={items}
+            />
+          )}
+        />
       )}
 
       {errorField && (

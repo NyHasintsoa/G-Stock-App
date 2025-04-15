@@ -9,6 +9,7 @@ import SupplierModel from "../models/SupplierModel.js";
 import TypeModel from "../models/TypeModel.js";
 import CategoryService from "./CategoryService.js";
 import StockModel from "../models/StockModel.js";
+import sequelize from "../models/DatabaseConnection.js";
 
 class ProductService extends ParentService {
   _model;
@@ -48,6 +49,7 @@ class ProductService extends ParentService {
   /**
    * Add product to the database
    * @param {Object} req Request from client
+   * @return {Object} Product Informations
    */
   async addProduct(req) {
     const categories = [];
@@ -70,8 +72,29 @@ class ProductService extends ParentService {
    * Update Product By Id
    * @param {Object} req Request body
    * @param {string} productId Product Id
+   * @return {Object} Product Informations
    */
-  async updateProduct(req, productId) {}
+  async updateProduct(req, productId) {
+    const product = await this._model.findByPk(productId);
+    if (!product) throw new Error("Product not found !");
+    await product.setCategoryModels([]);
+    if (req.categoriesId && req.categoriesId.length > 0) {
+      const categories = await Promise.all(
+        req.categoriesId.map(async (categoryId) => {
+          return await this.#categoryService.getById(categoryId);
+        })
+      );
+      await product.addCategoryModels(categories);
+    }
+    await product.update({
+      name: req.name,
+      price: req.price,
+      description: req.description,
+      supplierId: req.supplierId,
+      typesProductId: req.typesProductId
+    });
+    return await product.save();
+  }
 
   /**
    * Upload Product Image To the disk
@@ -80,7 +103,7 @@ class ProductService extends ParentService {
   async uploadImage(req) {
     const { id } = req.params;
     const product = this._model.findByPk(id);
-    if (!product) throw new Error("Product not Found");
+    if (!product) throw new Error("Product not Found !");
     const { path_img } = product;
     if (path_img) {
       const [folder, file] = path_img.split("/");

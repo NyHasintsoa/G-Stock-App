@@ -4,6 +4,7 @@ import InputForm from "../../components/inputForm/InputForm.jsx";
 import { wait } from "../../utils/api.js";
 import SubmitBtn from "../../components/submitBtn/SubmitBtn.jsx";
 import useAuth from "../../hooks/useAuth.js";
+import { SigninForm as FormFields } from "../../forms/SigninForm.js";
 
 function Signin() {
   const { login } = useAuth();
@@ -145,36 +146,5 @@ function Signin() {
     </>
   );
 }
-
-const FormFields = {
-  email: {
-    name: "email",
-    type: "email",
-    label: "Email",
-    rules: {
-      required: "Veuillez entrer votre adresse mail",
-      pattern: {
-        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-        message: "Adresse e-mail invalide"
-      },
-      minLength: {
-        value: 3,
-        message: "Ce champ doit comporter au moins 3 caractères"
-      }
-    }
-  },
-  password: {
-    name: "password",
-    type: "password",
-    label: "Mot de passe",
-    rules: {
-      required: "Veuillez entrer votre mot de passe",
-      minLength: {
-        value: 3,
-        message: "Ce champ doit comporter au moins 3 caractères"
-      }
-    }
-  }
-};
 
 export default Signin;

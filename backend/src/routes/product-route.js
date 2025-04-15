@@ -56,9 +56,10 @@ const productRoutes = async (fastify, options) => {
 
   fastify.put("/api/products/upload/:id", async (req, reply) => {
     try {
-      await productService.uploadImage(req);
+      const result = await productService.uploadImage(req);
       reply.status(200).send({
-        message: "Product Image uploaded successfully"
+        message: "Product Image uploaded successfully",
+        data: result
       });
     } catch (error) {
       reply.status(500).send(error);
@@ -71,7 +72,7 @@ const productRoutes = async (fastify, options) => {
     async (req, reply) => {
       try {
         const { id } = req.params;
-        await service.updateProduct(req.body, id);
+        await productService.updateProduct(req.body, id);
         reply.status(200).send({
           message: "Product Updated Successfully"
         });

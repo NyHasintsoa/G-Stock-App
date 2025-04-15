@@ -1,4 +1,10 @@
-function InputForm({ register, value = null, options, errorField }) {
+function InputForm({
+  register,
+  value = "",
+  options,
+  errorField,
+  disabled = false
+}) {
   return (
     <div className="form-field mb-2">
       <label htmlFor={"input-" + options.name} className="form-label">
@@ -14,6 +20,7 @@ function InputForm({ register, value = null, options, errorField }) {
             (errorField && " border-red-600")
           }
           id={"input-" + options.name}
+          disabled={disabled}
         ></textarea>
       ) : (
         <input
@@ -26,6 +33,7 @@ function InputForm({ register, value = null, options, errorField }) {
             (errorField && " border-red-600")
           }
           id={"input-" + options.name}
+          disabled={disabled}
         />
       )}
 

@@ -6,7 +6,7 @@ import ejs from "ejs";
 
 const uploadDir = path.join(
   dirname(dirname(dirname(fileURLToPath(import.meta.url)))),
-  "uploads"
+  "upload"
 );
 
 const publicDir = path.join(

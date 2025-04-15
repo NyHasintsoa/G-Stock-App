@@ -12,6 +12,7 @@ function SelectMultipleForm({
   values = []
 }) {
   const [items, setItems] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [loading, startTransition] = useTransition();
   const animatedComponents = makeAnimated();
 
@@ -34,6 +35,10 @@ function SelectMultipleForm({
     hydrateSelect();
   }, []);
 
+  useEffect(() => {
+    if (values.length > 0) setSelected(values);
+  }, [values]);
+
   return (
     <div className="form-field mb-2">
       <label htmlFor={"select-" + options.name} className="form-label">
@@ -45,7 +50,6 @@ function SelectMultipleForm({
       ) : (
         <Controller
           name={options.name}
-          defaultValue={values}
           control={control}
           rules={options.rules}
           render={({ field }) => (
@@ -53,9 +57,10 @@ function SelectMultipleForm({
               {...field}
               onChange={(selectOptions) => {
                 field.onChange(selectOptions);
+                setSelected(selectOptions);
               }}
               isMulti
-              defaultValue={values}
+              value={selected}
               components={animatedComponents}
               options={items}
             />

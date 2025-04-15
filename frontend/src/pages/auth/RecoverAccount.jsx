@@ -5,6 +5,7 @@ import { wait } from "../../utils/api.js";
 import SubmitBtn from "../../components/submitBtn/SubmitBtn.jsx";
 import { useState } from "react";
 import authService from "../../services/AuthService.js";
+import { RecoveryAccount as FormFields } from "../../forms/RecoveryAccount.js";
 
 function RecoverAccount() {
   const { register, handleSubmit, formState } = useForm();
@@ -65,24 +66,5 @@ function RecoverAccount() {
     </div>
   );
 }
-
-const FormFields = {
-  email: {
-    name: "email",
-    type: "email",
-    label: "Adresse mail",
-    rules: {
-      required: "Veuillez entrer votre adresse mail",
-      pattern: {
-        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-        message: "Adresse e-mail invalide"
-      },
-      minLength: {
-        value: 3,
-        message: "Ce champ doit comporter au moins 3 caractères"
-      }
-    }
-  }
-};
 
 export default RecoverAccount;

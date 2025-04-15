@@ -9,12 +9,16 @@ import StockModel from "./StockModel.js";
 
 ProductModel.belongsToMany(CategoryModel, {
   through: "products_categories",
-  timestamps: false
+  timestamps: false,
+  onDelete: "CASCADE",
+  onUpdate: "RESTRICT"
 });
 
 CategoryModel.belongsToMany(ProductModel, {
   through: "products_categories",
-  timestamps: false
+  timestamps: false,
+  onDelete: "CASCADE",
+  onUpdate: "RESTRICT"
 });
 
 ProductModel.belongsTo(SupplierModel, {
@@ -68,7 +72,7 @@ StockModel.belongsTo(ProductModel, {
 });
 
 ProductModel.hasOne(StockModel);
-
+//
 // import sequelize from "./DatabaseConnection.js";
 // await sequelize.drop();
 // sequelize
