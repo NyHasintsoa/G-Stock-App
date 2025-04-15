@@ -11,3 +11,5 @@ npm i
 cd ../frontend
 npm i
 ```
+
+### uncomment lines on file backend/src/models/Migration.js to migrate database
